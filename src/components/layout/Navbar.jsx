@@ -7,9 +7,14 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <Link to="/" className="nav-brand">
-        <div className="nav-logo">ن</div>
+        <img 
+  src="https://res.cloudinary.com/dmh5q3yef/image/upload/logo_fnnink.png" 
+  alt="Logo Pesantren Nur Muhammad" 
+  className="nav-logo"
+  style={{ width: '48px', height: '48px', objectFit: 'contain' }}
+/>
         <div className="nav-title">
-          <strong>Pesantren Nur Muhammad</strong>
+          <strong>Pondok Pesantren Agung Nur Muhammad</strong>
           <span>Wonoayu · Mojoagung · Jombang</span>
         </div>
       </Link>
