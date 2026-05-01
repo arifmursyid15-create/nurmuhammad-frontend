@@ -89,14 +89,7 @@ export default function Home() {
     { cat: 'Artikel Islami', icon: '🌙', title: "Keutamaan Menghafal Al-Qur'an Sejak Usia Dini bagi Generasi Muslim", date: '28 Des 2024', slug: 'keutamaan-tahfidz' },
   ]
 
-  const bioItems = [
-    { icon: '🎓', text: "Alumni Al-Azhar Kairo, Mesir — jurusan Syari'ah" },
-    { icon: '🕌', text: 'Mendirikan Pesantren Nur Muhammad sejak 2004 di Jombang' },
-    { icon: '📅', text: 'Lebih dari 20 tahun mengabdikan diri di bidang pendidikan Islam' },
-    { icon: '📖', text: "Aktif mengajar Fiqih, Tafsir Al-Qur'an, dan Bahasa Arab" },
-  ]
-
-  const tags = ["Fiqih & Ushul Fiqih", "Tafsir Al-Qur'an", 'Bahasa Arab', 'Al-Azhar Kairo']
+ 
 
   return (
     <>
@@ -146,22 +139,14 @@ export default function Home() {
       <section className="section kyayasan-section">
         <div className="kyayasan-inner">
           <div className="ky-profile-card">
-            <div className="ky-avatar">👳</div>
-            <div className="ky-name">KH. Muhammad Nur Hasyim, Lc.</div>
-            <div className="ky-title">Ketua Yayasan & Pendiri Pesantren</div>
-            <div className="ky-divider" />
-            <div className="ky-bio-items">
-              {bioItems.map(b => (
-                <div key={b.text} className="ky-bio-item">
-                  <span className="ky-bio-icon">{b.icon}</span>
-                  <span>{b.text}</span>
-                </div>
-              ))}
-            </div>
-            <div className="ky-tags">
-              {tags.map(t => <span key={t} className="ky-tag">{t}</span>)}
-            </div>
-          </div>
+  <img 
+    src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
+    alt="KH. Muhammad Nur Hasyim, Lc."
+    style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem', border: '4px solid #40916c' }}
+  />
+  <div className="ky-name">KH. Muhammad Nur Hasyim, Lc.</div>
+  <div className="ky-title">Ketua Yayasan & Pendiri Pesantren</div>
+</div>
 
           <div className="ky-amanat">
             <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
