@@ -14,7 +14,7 @@ export default function Navbar() {
   style={{ width: '48px', height: '48px', objectFit: 'contain' }}
 />
         <div className="nav-title">
-          <strong>Pondok Pesantren Agung Nur Muhammad</strong>
+          <strong>PPA Nur Muhammad</strong>
           <span>Wonoayu · Mojoagung · Jombang</span>
         </div>
       </Link>
