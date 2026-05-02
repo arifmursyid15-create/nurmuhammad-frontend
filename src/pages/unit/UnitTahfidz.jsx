@@ -97,7 +97,7 @@ export default function UnitTahfidz() {
         <div className="unit-hero-arabic">ن</div>
         <div className="unit-hero-inner">
           <div>
-            <div className="unit-hero-ppdb-badge"><span className="dot" /> PPDB 2025/2026 Dibuka</div>
+            <div className="unit-hero-ppdb-badge"><span className="dot" /> PPDB 2026/2027 Dibuka</div>
             <h1>
               <span className="unit-level">Program Intensif · Pasca SMA / MA</span>
               Tahfidz<br />Murni
@@ -250,7 +250,7 @@ export default function UnitTahfidz() {
           <div className="unit-ppdb-section">
             <div className="unit-ppdb-inner">
               <div>
-                <div className="ppdb-eyebrow">Pendaftaran · PPDB 2025/2026</div>
+                <div className="ppdb-eyebrow">Pendaftaran · PPDB 2026/2027</div>
                 <h2 className="ppdb-title">Daftar Program Tahfidz Murni</h2>
                 <p className="ppdb-desc">Dedikasikan waktu terbaik Anda untuk Al-Qur'an. Kami siap membimbing perjalanan hafalan Anda dari juz pertama hingga khatam 30 juz.</p>
                 <div className="syarat-grid">
@@ -259,16 +259,16 @@ export default function UnitTahfidz() {
                 </div>
                 <div className="ppdb-btns">
                   <Link to="/ppdb" className="btn-ppdb-gold">✏️ Daftar PPDB Online</Link>
-                  <a href="https://wa.me/6281200000000" className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
+                  <a href="https://wa.me/6282177832648" className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
                 </div>
               </div>
               <div className="ppdb-info-card">
-                <h4>Info PPDB Tahfidz 2025/2026</h4>
+                <h4>Info PPDB Tahfidz 2026/2027</h4>
                 <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className="status-open-badge">Dibuka</span></span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Penerimaan</span><span className="pir-value">Putra & Putri</span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">30 Santri</span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Biaya Daftar</span><span className="pir-value">Rp 100.000</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">2025/2026</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">2026/2027</span></div>
                 <div className="ppdb-note">Kuota terbatas. Pendaftaran ditutup setelah kuota terpenuhi.</div>
               </div>
             </div>
