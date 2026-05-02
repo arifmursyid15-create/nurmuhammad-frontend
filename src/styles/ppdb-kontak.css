@@ -336,3 +336,12 @@
   .review-grid { grid-template-columns: 1fr; }
   .fg.span2 { grid-column: span 1; }
 }
+
+@media print {
+  body * { visibility: hidden; }
+  .konfirmasi-wrap, .konfirmasi-wrap * { visibility: visible; }
+  .konfirmasi-wrap { position: absolute; left: 0; top: 0; width: 100%; }
+  .konfirmasi-actions { display: none; }
+  .btn-back-step { display: none; }
+  nav, footer { display: none; }
+}

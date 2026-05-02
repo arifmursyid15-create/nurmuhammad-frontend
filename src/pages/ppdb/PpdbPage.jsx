@@ -363,7 +363,7 @@ export default function PpdbPage() {
             </div>
             <div className="konfirmasi-actions">
               <button className="btn-print" onClick={() => alert('Fitur cetak segera tersedia.')}>Print Formulir PPDB</button>
-              <a href="https://wa.me/6281200000000" target="_blank" rel="noreferrer" className="btn-wa-konfirmasi">Konfirmasi via WhatsApp</a>
+              <a href="https://wa.me/6282177832648" target="_blank" rel="noreferrer" className="btn-wa-konfirmasi">Konfirmasi via WhatsApp</a>
             </div>
             <div style={{ textAlign: 'center' }}>
               <button className="btn-back-step" style={{ margin: '0 auto' }} onClick={() => { setActiveTab('daftar'); setStep(1) }}>+ Daftarkan Santri Lain</button>
@@ -426,7 +426,7 @@ export default function PpdbPage() {
             <div className="or-divider">atau hubungi panitia</div>
             <div className="wa-help">
               <p>Lupa nomor pendaftaran atau butuh bantuan? Hubungi panitia PPDB kami via WhatsApp.</p>
-              <a href="https://wa.me/6281200000000" target="_blank" rel="noreferrer" className="btn-wa-sm">Chat Panitia PPDB</a>
+              <a href="https://wa.me/6282177832648" target="_blank" rel="noreferrer" className="btn-wa-sm">Chat Panitia PPDB</a>
             </div>
           </div>
         </div>
