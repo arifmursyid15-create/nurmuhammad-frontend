@@ -24,6 +24,7 @@ export default function PpdbPage() {
   const [cekLoading, setCekLoading] = useState(false)
   const [consent1, setConsent1] = useState(false)
   const [consent2, setConsent2] = useState(false)
+  const [namaPanitia, setNamaPanitia] = useState('')
 
   const update = (key, val) => setFormData(prev => ({ ...prev, [key]: val }))
 
@@ -420,8 +421,18 @@ export default function PpdbPage() {
                     )}
                   </div>
                   <div style={{ padding: '0 1.5rem 1.5rem' }}>
-                    <button className="btn-print" onClick={() => window.print()}>Cetak Ulang Formulir</button>
-                  </div>
+  <div className="fg" style={{ marginBottom: '0.75rem' }}>
+    <label style={{ fontSize: '0.85rem', color: '#555' }}>Nama Panitia PPDB (untuk formulir cetak)</label>
+    <input 
+      type="text" 
+      placeholder="Contoh: Ahmad Fauzi, S.Pd" 
+      value={namapanitia}
+      onChange={e => setNamaPanitia(e.target.value)}
+      style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+    />
+  </div>
+  <button className="btn-print" onClick={() => window.print()}>Cetak Ulang Formulir</button>
+</div>
                 </div>
 
                 {/* PRINT AREA */}
@@ -478,7 +489,7 @@ export default function PpdbPage() {
                         <p>Jombang, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                         <p>Panitia PPDB</p>
                         <div style={{ marginTop: '60px', borderTop: '1px solid #000', paddingTop: '5px' }}>
-                          Pesantren Nur Muhammad
+                          {namaPanitia || 'Panitia PPDB Nur Muhammad'}
                         </div>
                       </div>
                     </div>
