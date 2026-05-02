@@ -143,9 +143,8 @@ useEffect(() => {
               </div>
               <div className="visimisi-body">
                 <p className="visi-text">
-                  Menjadi lembaga pendidikan Islam unggulan yang melahirkan generasi berilmu, berakhlak mulia,
-                  hafal Al-Qur'an, dan bermanfaat bagi bangsa serta agama di tingkat nasional maupun internasional.
-                </p>
+                  {settings.profil_visi || 'Menjadi lembaga pendidikan Islam unggulan...'}
+                  </p>
               </div>
             </div>
             <div className="visimisi-card">
@@ -155,10 +154,10 @@ useEffect(() => {
               </div>
               <div className="visimisi-body">
                 <ol className="misi-list">
-                  {misi.map((m, i) => (
+                  {(settings.profil_misi || '').split('|').map((m, i) => (
                     <li key={i}>
                       <span className="misi-num">{i + 1}</span>
-                      <span>{m}</span>
+                      <span>{m.replace(/^\d+\.\s*/, '')}</span>
                     </li>
                   ))}
                 </ol>
