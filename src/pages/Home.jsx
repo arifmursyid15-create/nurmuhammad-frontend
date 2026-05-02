@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/home.css'
+import { getLatestArticles } from '../api/articles'
 
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [berita, setBerita] = useState([])
+
+        useEffect(() => {
+          getLatestArticles()
+            .then(res => setBerita(res.data || []))
+            .catch(() => {})
+        }, [])
 
   const slides = [
     {
@@ -81,12 +89,6 @@ export default function Home() {
     { icon: '📖', label: 'Kelas Tahfidz' },
     { icon: '⚽', label: 'Ekstrakurikuler' },
     { icon: '🏠', label: 'Asrama Santri' },
-  ]
-
-  const berita = [
-    { cat: 'Kegiatan', icon: '📸', title: 'Haflah Akhirussanah 2024/2025 Berlangsung Meriah dan Penuh Syukur', date: '15 Jan 2025', slug: 'haflah-akhirussanah-2024' },
-    { cat: 'Pengumuman', icon: '📢', title: 'PPDB 2025/2026 Resmi Dibuka — Pendaftaran Online Sudah Tersedia', date: '2 Jan 2025', slug: 'ppdb-2025-2026-dibuka' },
-    { cat: 'Artikel Islami', icon: '🌙', title: "Keutamaan Menghafal Al-Qur'an Sejak Usia Dini bagi Generasi Muslim", date: '28 Des 2024', slug: 'keutamaan-tahfidz' },
   ]
 
  
@@ -275,32 +277,41 @@ export default function Home() {
       </section>
 
       {/* ─── BERITA ─── */}
-      <section className="section">
-        <div className="section-inner">
-          <div className="section-header-row">
-            <div>
-              <div className="section-eyebrow">Berita & Artikel</div>
-              <h2 className="section-title">Kabar Terbaru</h2>
-            </div>
-            <Link to="/berita" className="link-all">Lihat semua →</Link>
+<section className="section">
+  <div className="section-inner">
+    <div className="section-header-row">
+      <div>
+        <div className="section-eyebrow">Berita & Artikel</div>
+        <h2 className="section-title">Kabar Terbaru</h2>
+      </div>
+      <Link to="/berita" className="link-all">Lihat semua →</Link>
+    </div>
+    <div className="berita-grid">
+      {berita.length === 0 ? (
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Belum ada artikel.</p>
+      ) : berita.map(b => (
+        <div key={b.slug} className="berita-card">
+          <div className="berita-thumb">
+            {b.thumbnail
+              ? <img src={b.thumbnail} alt={b.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : '📰'
+            }
           </div>
-          <div className="berita-grid">
-            {berita.map(b => (
-              <div key={b.slug} className="berita-card">
-                <div className="berita-thumb">{b.icon}</div>
-                <div className="berita-body">
-                  <span className="berita-cat">{b.cat}</span>
-                  <h3>{b.title}</h3>
-                  <div className="berita-meta">
-                    <span className="berita-date">{b.date}</span>
-                    <Link to={`/berita/${b.slug}`} className="berita-link">Baca →</Link>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="berita-body">
+            <span className="berita-cat">{b.category?.name || 'Artikel'}</span>
+            <h3>{b.title}</h3>
+            <div className="berita-meta">
+              <span className="berita-date">
+                {new Date(b.published_at || b.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </span>
+              <Link to={`/berita/${b.slug}`} className="berita-link">Baca →</Link>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* ─── CTA PPDB ─── */}
       <section className="section cta-section">
