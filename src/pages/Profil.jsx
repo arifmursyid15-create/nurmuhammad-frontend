@@ -1,7 +1,17 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import '../styles/profil.css'
+import httpClient from '../api/httpClient'
+
 
 export default function Profil() {
+  const [settings, setSettings] = useState({})
+
+useEffect(() => {
+  httpClient.get('/public/settings')
+    .then(res => setSettings(res.data))
+    .catch(() => {})
+}, [])
   const timeline = [
     { year: '2004', title: 'Pesantren Berdiri', desc: 'Didirikan oleh Kyai Agus Kamaludin Ismail Al-Hafidz dengan belasan santri perdana di Wonoayu, Jombang.' },
     { year: '2007', title: 'SMP Nur Muhammad Dibuka', desc: 'Unit pendidikan formal pertama resmi beroperasi dengan akreditasi dari Kemendikbud.' },
@@ -88,8 +98,7 @@ export default function Profil() {
               <div style={{ marginTop: '1.5rem' }}>
                 <p className="sejarah-text" style={{ color: 'var(--text-mid)', fontSize: '0.925rem', lineHeight: '1.85', marginBottom: '1rem' }}>
                   Pesantren Nur Muhammad berdiri pada tahun 2004 di Wonoayu, Mojoagung, Kabupaten Jombang —
-                  sebuah daerah yang sejak lama dikenal sebagai "Kota Santri". Didirikan oleh KH. Muhammad Nur
-                  Hasyim, Lc., seorang ulama alumni Al-Azhar Kairo, pesantren ini hadir dengan tekad kuat untuk
+                  sebuah daerah yang sejak lama dikenal sebagai "Kota Santri". Didirikan oleh Kyai Agus Kamaludin Ismail Al-Hafidz, pesantren ini hadir dengan tekad kuat untuk
                   mencetak generasi muslim yang tidak hanya cerdas secara akademik, tetapi juga kokoh dalam
                   keimanan dan akhlak.
                 </p>
