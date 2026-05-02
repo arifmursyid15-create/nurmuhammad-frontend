@@ -135,48 +135,40 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ─── KETUA YAYASAN ─── */}
-      <section className="section kyayasan-section">
-        <div className="kyayasan-inner">
-          <div className="ky-profile-card">
-  <img 
+      <div className="ky-profile-card" style={{
+  backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  borderRadius: '16px',
+  minHeight: '400px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '2rem',
+  position: 'relative',
+  overflow: 'hidden',
+  textAlign: 'center',
+}}>
+  <div style={{
+    position: 'absolute', inset: 0,
+    background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
+    borderRadius: '16px'
+  }} />
+  <img
     src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
-    alt="KH. Muhammad Nur Hasyim, Lc."
-    style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem', border: '4px solid #40916c' }}
+    alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
+    style={{
+      width: '160px', height: '200px', borderRadius: '12px',
+      objectFit: 'cover', border: '4px solid #c8a951',
+      position: 'relative', zIndex: 1, marginBottom: '1rem'
+    }}
   />
-  <div className="ky-name">Kyai Agus Kamaludin Ismail Al-Hafidz.</div>
-  <div className="ky-title">Ketua Yayasan & Pengasuh</div>
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>Kyai Agus Kamaludin Ismail Al-Hafidz</div>
+    <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>Ketua Yayasan & Pengasuh Pesantren</div>
+  </div>
 </div>
-
-          <div className="ky-amanat">
-            <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
-            <h2 className="ky-heading">
-              Pesan untuk Para Santri<br />dan Keluarga Besar Pesantren
-            </h2>
-            <span className="ky-quote-mark">"</span>
-            <p className="ky-quote-text">
-              Pesantren bukan sekadar tempat belajar ilmu — ia adalah{' '}
-              <strong>rumah kedua yang membentuk jiwa</strong>. Kami hadir bukan hanya
-              untuk mencerdaskan akal, tetapi juga untuk menempa hati agar kelak para
-              santri menjadi manusia yang berilmu, berakhlak mulia, dan bermanfaat bagi
-              agama serta bangsa.
-              <br /><br />
-              Setiap santri yang masuk ke sini membawa amanah dari orang tuanya. Amanah
-              itu kami emban dengan sepenuh hati, dengan harapan kelak mereka pulang
-              membawa kebanggaan — bukan hanya bagi keluarga, tapi bagi{' '}
-              <strong>umat Islam seluruhnya</strong>.
-            </p>
-            <div className="ky-attribution">
-              <div className="ky-attr-line" />
-              <div>
-                <div className="ky-attr-name">Kyai Agus Kamaludin Ismail Al-Hafidz</div>
-                <div className="ky-attr-role">Ketua Yayasan & Pengasuh Nur Muhammad</div>
-              </div>
-            </div>
-            <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
-          </div>
-        </div>
-      </section>
 
       {/* ─── UNIT PENDIDIKAN ─── */}
       <section className="section">
