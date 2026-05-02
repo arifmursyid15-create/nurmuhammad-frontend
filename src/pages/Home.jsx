@@ -22,7 +22,7 @@ export default function Home() {
       cta2: { label: 'Daftar Sekarang', to: '/ppdb' },
     },
     {
-      tag: 'PPDB 2025/2026 Dibuka',
+      tag: 'PPDB 2026/2027 Dibuka',
       title: <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
       desc: 'Pendaftaran online mudah dan cepat. Pilih program SMP, MA, atau Tahfidz Murni — putra maupun putri.',
       cta1: { label: 'Daftar Online', to: '/ppdb' },
@@ -144,8 +144,8 @@ export default function Home() {
     alt="KH. Muhammad Nur Hasyim, Lc."
     style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem', border: '4px solid #40916c' }}
   />
-  <div className="ky-name">KH. Muhammad Nur Hasyim, Lc.</div>
-  <div className="ky-title">Ketua Yayasan & Pendiri Pesantren</div>
+  <div className="ky-name">Kyai Agus Kamaludin Ismail Al-Hafidz.</div>
+  <div className="ky-title">Ketua Yayasan & Pengasuh</div>
 </div>
 
           <div className="ky-amanat">
@@ -169,8 +169,8 @@ export default function Home() {
             <div className="ky-attribution">
               <div className="ky-attr-line" />
               <div>
-                <div className="ky-attr-name">KH. Muhammad Nur Hasyim, Lc.</div>
-                <div className="ky-attr-role">Ketua Yayasan Nur Muhammad · Aktif membimbing & mengajar</div>
+                <div className="ky-attr-name">Kyai Agus Kamaludin Ismail Al-Hafidz</div>
+                <div className="ky-attr-role">Ketua Yayasan & Pengasuh Nur Muhammad</div>
               </div>
             </div>
             <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
@@ -281,7 +281,7 @@ export default function Home() {
       <section className="section cta-section">
         <div className="cta-inner">
           <div>
-            <div className="cta-eyebrow">PPDB 2025/2026 Masih Dibuka</div>
+            <div className="cta-eyebrow">PPDB 2026/2027 Masih Dibuka</div>
             <h2 className="cta-title">Daftarkan Putra-Putri<br />Anda Sekarang</h2>
             <p className="cta-desc">
               Proses pendaftaran online mudah, cepat, dan bisa dipantau kapan saja.
@@ -299,7 +299,7 @@ export default function Home() {
                 <span className="dot-open" /> {p} — Buka
               </div>
             ))}
-            <div className="cta-status-note">Putra & Putri · T.A. 2025/2026</div>
+            <div className="cta-status-note">Putra & Putri · T.A. 2026/2027</div>
           </div>
         </div>
       </section>

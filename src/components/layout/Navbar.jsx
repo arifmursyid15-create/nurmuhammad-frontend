@@ -31,7 +31,7 @@ export default function Navbar() {
         </li>
         <li><NavLink to="/berita">Berita</NavLink></li>
         <li><NavLink to="/kontak">Kontak</NavLink></li>
-        <li><NavLink to="/ppdb" className="btn-ppdb">PPDB 2025/2026</NavLink></li>
+        <li><NavLink to="/ppdb" className="btn-ppdb">PPDB 2026/2027</NavLink></li>
       </ul>
       <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
         {menuOpen ? 'X' : '='}
