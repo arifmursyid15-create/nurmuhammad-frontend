@@ -1,3 +1,4 @@
+// v2
 import { useState } from 'react'
 import '../../styles/ppdb-kontak.css'
 import { submitPpdb, checkPpdb } from '../../api/ppdb'
@@ -362,7 +363,7 @@ export default function PpdbPage() {
               <div className="detail-row"><span className="dl">No. WhatsApp Wali</span><span className="dv">{formData.waWali}</span></div>
             </div>
             <div className="konfirmasi-actions">
-              <button className="btn-print" onClick={() => alert('Fitur cetak segera tersedia.')}>Print Formulir PPDB</button>
+              <button className="btn-print" onClick={() => window.print()}>Print Formulir PPDB</button>
               <a href="https://wa.me/6282177832648" target="_blank" rel="noreferrer" className="btn-wa-konfirmasi">Konfirmasi via WhatsApp</a>
             </div>
             <div style={{ textAlign: 'center' }}>
@@ -418,7 +419,7 @@ export default function PpdbPage() {
                   )}
                 </div>
                 <div style={{ padding: '0 1.5rem 1.5rem' }}>
-                  <button className="btn-print" onClick={() => alert('Fitur cetak segera tersedia.')}>Cetak Ulang Formulir</button>
+                  <button className="btn-print" onClick={() => window.print()}>Cetak Ulang Formulir</button>
                 </div>
               </div>
             )}
