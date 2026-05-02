@@ -181,32 +181,34 @@ export default function Profil() {
   <div className="pengasuh-card">
     <div className="pengasuh-inner">
       <div className="pengasuh-left" style={{
-        backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        borderRadius: '16px',
-        minHeight: '400px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '2rem',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
+  backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  borderRadius: '16px',
+  minHeight: '400px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '2rem',
+  position: 'relative',
+  overflow: 'hidden',
+  textAlign: 'center',
+}}>
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
           borderRadius: '16px'
         }} />
         <img
-          src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
-          alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
-          style={{
-            width: '140px', height: '140px', borderRadius: '50%',
-            objectFit: 'cover', border: '4px solid #c8a951',
-            position: 'relative', zIndex: 1, marginBottom: '1rem'
-          }}
-        />
+  src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
+  alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
+  style={{
+    width: '160px', height: '200px', borderRadius: '12px',
+    objectFit: 'cover', border: '4px solid #c8a951',
+    position: 'relative', zIndex: 1, marginBottom: '1rem'
+  }}
+/>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>Kyai Agus Kamaludin Ismail Al-Hafidz</div>
           <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>Ketua Yayasan & Pengasuh Pesantren</div>
