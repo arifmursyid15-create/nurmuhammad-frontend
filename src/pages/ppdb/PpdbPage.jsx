@@ -1,4 +1,4 @@
-// v2
+// v3
 import { useState } from 'react'
 import '../../styles/ppdb-kontak.css'
 import { submitPpdb, checkPpdb } from '../../api/ppdb'
@@ -82,8 +82,8 @@ export default function PpdbPage() {
       <div className="ppdb-hero">
         <div className="ppdb-hero-arabic">ن</div>
         <div className="ppdb-hero-inner">
-          <div className="ppdb-badge"><span className="dot" /> PPDB 2025/2026 — SEDANG DIBUKA</div>
-          <h1>Pendaftaran Peserta Didik Baru <span>2025/2026</span></h1>
+          <div className="ppdb-badge"><span className="dot" /> PPDB 2026/2027 — SEDANG DIBUKA</div>
+          <h1>Pendaftaran Peserta Didik Baru <span>2026/2027</span></h1>
           <p>Daftarkan putra-putri Anda ke Pesantren Nur Muhammad. Satu form untuk semua program — SMP, MA, dan Tahfidz Murni.</p>
         </div>
         <div className="ppdb-tab-nav">
@@ -102,7 +102,7 @@ export default function PpdbPage() {
             <div className="status-left">
               <div className="status-icon">🟢</div>
               <div>
-                <strong>PPDB 2025/2026 Resmi Dibuka</strong>
+                <strong>PPDB 2026/2027 Resmi Dibuka</strong>
                 <span>Semua program menerima pendaftar — putra & putri.</span>
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function PpdbPage() {
         <div className={`ppdb-panel ${activeTab === 'daftar' ? 'active' : ''}`}>
           <div className="ppdb-form-wrap">
             <div className="ppdb-form-header">
-              <h2>Formulir Pendaftaran PPDB 2025/2026</h2>
+              <h2>Formulir Pendaftaran PPDB 2026/2027</h2>
               <p>Isi semua data dengan lengkap dan benar. Proses tidak lebih dari 5 menit.</p>
               <div className="step-indicator">
                 {siSteps.map((label, i) => (
@@ -296,7 +296,7 @@ export default function PpdbPage() {
                     <strong>{formData.program ? programLabel[formData.program] : 'Program belum dipilih'}</strong>
                     <span>Asrama {formData.boarding === 'putra' ? 'Putra' : formData.boarding === 'putri' ? 'Putri' : '-'}</span>
                     <div className="review-hl-chips">
-                      <span className="review-chip">T.A. 2025/2026</span>
+                      <span className="review-chip">T.A. 2026/2027</span>
                       <span className="review-chip">PPDB Online</span>
                     </div>
                   </div>
@@ -358,7 +358,7 @@ export default function PpdbPage() {
               <div className="detail-row"><span className="dl">Nama Calon Santri</span><span className="dv">{formData.namaLengkap}</span></div>
               <div className="detail-row"><span className="dl">Program</span><span className="dv">{programLabel[formData.program]}</span></div>
               <div className="detail-row"><span className="dl">Asrama</span><span className="dv">{formData.boarding === 'putra' ? 'Putra' : 'Putri'}</span></div>
-              <div className="detail-row"><span className="dl">Tahun Ajaran</span><span className="dv">2025/2026</span></div>
+              <div className="detail-row"><span className="dl">Tahun Ajaran</span><span className="dv">2026/2027</span></div>
               <div className="detail-row"><span className="dl">Status</span><span className="dv"><span className="status-pill">Menunggu Verifikasi</span></span></div>
               <div className="detail-row"><span className="dl">No. WhatsApp Wali</span><span className="dv">{formData.waWali}</span></div>
             </div>
@@ -403,25 +403,92 @@ export default function PpdbPage() {
             )}
 
             {showCekResult && cekResult && (
-              <div className="cek-result show">
-                <div className="cek-result-header">
-                  <strong>{cekResult.registration_number}</strong>
-                  <span>Ditemukan</span>
+              <>
+                <div className="cek-result show">
+                  <div className="cek-result-header">
+                    <strong>{cekResult.registration_number}</strong>
+                    <span>Ditemukan</span>
+                  </div>
+                  <div className="cek-result-body">
+                    <div className="detail-row"><span className="dl">Nama Santri</span><span className="dv">{cekResult.nama_lengkap}</span></div>
+                    <div className="detail-row"><span className="dl">Program</span><span className="dv">{programLabel[cekResult.program] || cekResult.program}</span></div>
+                    <div className="detail-row"><span className="dl">Asrama</span><span className="dv" style={{ textTransform: 'capitalize' }}>{cekResult.boarding_gender}</span></div>
+                    <div className="detail-row"><span className="dl">Tanggal Daftar</span><span className="dv">{new Date(cekResult.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
+                    <div className="detail-row"><span className="dl">Status</span><span className="dv"><span className="status-accepted">{cekResult.status}</span></span></div>
+                    {cekResult.admin_message && (
+                      <div className="detail-row"><span className="dl">Pesan Panitia</span><span className="dv">{cekResult.admin_message}</span></div>
+                    )}
+                  </div>
+                  <div style={{ padding: '0 1.5rem 1.5rem' }}>
+                    <button className="btn-print" onClick={() => window.print()}>Cetak Ulang Formulir</button>
+                  </div>
                 </div>
-                <div className="cek-result-body">
-                  <div className="detail-row"><span className="dl">Nama Santri</span><span className="dv">{cekResult.nama_lengkap}</span></div>
-                  <div className="detail-row"><span className="dl">Program</span><span className="dv">{programLabel[cekResult.program] || cekResult.program}</span></div>
-                  <div className="detail-row"><span className="dl">Asrama</span><span className="dv" style={{ textTransform: 'capitalize' }}>{cekResult.boarding_gender}</span></div>
-                  <div className="detail-row"><span className="dl">Tanggal Daftar</span><span className="dv">{new Date(cekResult.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
-                  <div className="detail-row"><span className="dl">Status</span><span className="dv"><span className="status-accepted">{cekResult.status}</span></span></div>
-                  {cekResult.admin_message && (
-                    <div className="detail-row"><span className="dl">Pesan Panitia</span><span className="dv" style={{ color: 'var(--text-mid)', fontWeight: 400 }}>{cekResult.admin_message}</span></div>
-                  )}
+
+                {/* PRINT AREA */}
+                <div id="print-formulir" style={{ display: 'none' }}>
+                  <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', borderBottom: '3px solid #1a3a2a', paddingBottom: '15px', marginBottom: '20px' }}>
+                      <img src="https://res.cloudinary.com/dmh5q3yef/image/upload/logo_fnnink.png" alt="Logo" style={{ width: '70px', height: '70px', objectFit: 'contain' }} />
+                      <h2 style={{ margin: '5px 0', color: '#1a3a2a' }}>FORMULIR PENDAFTARAN PPDB</h2>
+                      <h3 style={{ margin: '0', color: '#1a3a2a' }}>Pesantren Nur Muhammad</h3>
+                      <p style={{ margin: '3px 0', fontSize: '13px' }}>Wonoayu · Mojoagung · Jombang</p>
+                      <p style={{ margin: '3px 0', fontSize: '13px' }}>Tahun Ajaran {cekResult.tahun_ajaran || '2026/2027'}</p>
+                    </div>
+
+                    <div style={{ background: '#f0f7f4', padding: '10px 15px', borderRadius: '8px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                      <div><strong>No. Pendaftaran:</strong> {cekResult.registration_number}</div>
+                      <div><strong>Program:</strong> {programLabel[cekResult.program]}</div>
+                      <div><strong>Asrama:</strong> {cekResult.boarding_gender === 'putra' ? 'Putra' : 'Putri'}</div>
+                    </div>
+
+                    <h4 style={{ color: '#1a3a2a', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>DATA CALON SANTRI</h4>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px', fontSize: '13px' }}>
+                      <tbody>
+                        <tr><td style={{ padding: '5px', width: '35%', color: '#555' }}>Nama Lengkap</td><td style={{ padding: '5px' }}>: <strong>{cekResult.nama_lengkap}</strong></td></tr>
+                        <tr><td style={{ padding: '5px', color: '#555' }}>Tempat, Tanggal Lahir</td><td style={{ padding: '5px' }}>: {cekResult.tempat_lahir}, {new Date(cekResult.tanggal_lahir).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</td></tr>
+                        <tr><td style={{ padding: '5px', color: '#555' }}>Jenis Kelamin</td><td style={{ padding: '5px' }}>: {cekResult.jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan'}</td></tr>
+                        <tr><td style={{ padding: '5px', color: '#555' }}>Asal Sekolah</td><td style={{ padding: '5px' }}>: {cekResult.asal_sekolah}</td></tr>
+                        <tr><td style={{ padding: '5px', color: '#555' }}>Alamat</td><td style={{ padding: '5px' }}>: {[cekResult.desa, cekResult.kecamatan, cekResult.kabupaten].filter(Boolean).join(', ')}</td></tr>
+                        {cekResult.nik && <tr><td style={{ padding: '5px', color: '#555' }}>NIK</td><td style={{ padding: '5px' }}>: {cekResult.nik}</td></tr>}
+                        {cekResult.nisn && <tr><td style={{ padding: '5px', color: '#555' }}>NISN</td><td style={{ padding: '5px' }}>: {cekResult.nisn}</td></tr>}
+                      </tbody>
+                    </table>
+
+                    <h4 style={{ color: '#1a3a2a', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>DATA ORANG TUA / WALI</h4>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px', fontSize: '13px' }}>
+                      <tbody>
+                        <tr><td style={{ padding: '5px', width: '35%', color: '#555' }}>Nama Ayah</td><td style={{ padding: '5px' }}>: {cekResult.nama_ayah}</td></tr>
+                        {cekResult.hp_ayah && <tr><td style={{ padding: '5px', color: '#555' }}>No. HP Ayah</td><td style={{ padding: '5px' }}>: {cekResult.hp_ayah}</td></tr>}
+                        <tr><td style={{ padding: '5px', color: '#555' }}>Nama Ibu</td><td style={{ padding: '5px' }}>: {cekResult.nama_ibu}</td></tr>
+                        {cekResult.hp_ibu && <tr><td style={{ padding: '5px', color: '#555' }}>No. HP Ibu</td><td style={{ padding: '5px' }}>: {cekResult.hp_ibu}</td></tr>}
+                        <tr><td style={{ padding: '5px', color: '#555' }}>No. WhatsApp</td><td style={{ padding: '5px' }}>: {cekResult.wa_wali}</td></tr>
+                        {cekResult.email_wali && <tr><td style={{ padding: '5px', color: '#555' }}>Email</td><td style={{ padding: '5px' }}>: {cekResult.email_wali}</td></tr>}
+                      </tbody>
+                    </table>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px', fontSize: '13px' }}>
+                      <div style={{ textAlign: 'center' }}>
+                        <p>Mengetahui,</p>
+                        <p>Orang Tua / Wali</p>
+                        <div style={{ marginTop: '60px', borderTop: '1px solid #000', paddingTop: '5px' }}>
+                          ({cekResult.nama_ayah} / {cekResult.nama_ibu})
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'center' }}>
+                        <p>Jombang, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                        <p>Panitia PPDB</p>
+                        <div style={{ marginTop: '60px', borderTop: '1px solid #000', paddingTop: '5px' }}>
+                          Pesantren Nur Muhammad
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ marginTop: '20px', padding: '10px', background: '#f0f7f4', borderRadius: '8px', fontSize: '12px', textAlign: 'center' }}>
+                      <strong>Status: {cekResult.status}</strong> · Dicetak pada {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ padding: '0 1.5rem 1.5rem' }}>
-                  <button className="btn-print" onClick={() => window.print()}>Cetak Ulang Formulir</button>
-                </div>
-              </div>
+              </>
             )}
 
             <div className="or-divider">atau hubungi panitia</div>

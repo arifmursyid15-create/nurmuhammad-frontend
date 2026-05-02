@@ -339,13 +339,7 @@
 
 @media print {
   body * { visibility: hidden; }
-  .konfirmasi-wrap, .konfirmasi-wrap *,
-  .cek-result, .cek-result * { visibility: visible; }
-  .konfirmasi-wrap { position: absolute; left: 0; top: 0; width: 100%; }
-  .cek-result { position: absolute; left: 0; top: 0; width: 100%; }
-  .konfirmasi-actions { display: none !important; }
-  .btn-print { display: none !important; }
-  .btn-back-step { display: none !important; }
-  nav, footer, .ppdb-hero, .ppdb-tab-nav, 
-  .cek-card, .or-divider, .wa-help { display: none !important; }
+  #print-formulir, #print-formulir * { visibility: visible; }
+  #print-formulir { display: block !important; position: absolute; left: 0; top: 0; width: 100%; }
+  nav, footer { display: none !important; }
 }
