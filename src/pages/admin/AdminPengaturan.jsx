@@ -141,6 +141,33 @@ export default function AdminPengaturan() {
 
       </div>
 
+      {/* Visi & Misi */}
+        <div className="admin-card" style={{ gridColumn: '1 / -1' }}>
+          <div className="admin-card-header"><h3>🎯 Visi & Misi</h3></div>
+          <div className="admin-card-body">
+            <div className="admin-fg">
+              <label>Visi Pesantren</label>
+              <textarea
+                rows={3}
+                value={settings.site_visi || ''}
+                onChange={e => update('site_visi', e.target.value)}
+                placeholder="Tuliskan visi pesantren..."
+                style={{ width: '100%', resize: 'vertical' }}
+              />
+            </div>
+            <div className="admin-fg">
+              <label>Misi Pesantren (pisahkan tiap poin dengan baris baru)</label>
+              <textarea
+                rows={6}
+                value={settings.site_misi || ''}
+                onChange={e => update('site_misi', e.target.value)}
+                placeholder={"Mendidik santri yang berakhlak mulia\nMenghasilkan hafidz Quran yang berkualitas\n..."}
+                style={{ width: '100%', resize: 'vertical' }}
+              />
+            </div>
+          </div>
+        </div>
+
       <div style={{ marginTop: '1.5rem', textAlign: 'right' }}>
         <button className="admin-btn primary" onClick={handleSave} disabled={saving} style={{ fontSize: '0.95rem', padding: '0.85rem 2rem' }}>
           {saving ? 'Menyimpan...' : '💾 Simpan Semua Pengaturan'}
