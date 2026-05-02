@@ -88,12 +88,15 @@ export default function Kontak() {
             <div className="kontak-sec-eyebrow">Lokasi Pesantren</div>
             <h2 className="kontak-sec-title">Temukan Kami di Sini</h2>
             <p className="kontak-sec-sub">Pesantren Nur Muhammad berlokasi di Desa Wonoayu, Kecamatan Mojoagung, Kabupaten Jombang — mudah dijangkau dari berbagai arah.</p>
-            <div className="map-placeholder">
-              <div className="map-placeholder-icon">🗺️</div>
-              <div className="map-placeholder-text">Peta Lokasi Pesantren Nur Muhammad</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Wonoayu, Mojoagung, Jombang</div>
-            </div>
-            {/* Di production: ganti div di atas dengan iframe Google Maps */}
+           <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.901599982332!2d112.36522490000002!3d-7.585688899999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e786d8a8c5d060f%3A0x2c1287bf50639123!2sPPTQ%20Nur%20Muhammad%20Wonoayu!5e0!3m2!1sen!2sid!4v1777703198772!5m2!1sen!2sid"
+                width="100%"
+                height="300"
+                style={{ borderRadius: '12px', border: 'none' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             <div className="map-actions">
               <a href="https://maps.app.goo.gl/wg9MbnnS4Uqvb43L8" target="_blank" rel="noreferrer" className="btn-map-green">🗺️ Buka Google Maps</a>
               <a href="https://maps.app.goo.gl/wg9MbnnS4Uqvb43L8" target="_blank" rel="noreferrer" className="btn-map-outline">🧭 Petunjuk Arah</a>
