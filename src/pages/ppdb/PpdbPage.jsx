@@ -426,7 +426,7 @@ export default function PpdbPage() {
     <input 
       type="text" 
       placeholder="Contoh: Ahmad Fauzi, S.Pd" 
-      value={namapanitia}
+      value={namaPanitia}
       onChange={e => setNamaPanitia(e.target.value)}
       style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem' }}
     />
