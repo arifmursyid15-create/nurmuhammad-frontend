@@ -24,7 +24,7 @@ export default function Kontak() {
 
   const kontakCards = [
     { icon: '💬', iconClass: 'wa', label: 'WhatsApp Utama', title: 'Chat Langsung', desc: 'Cara tercepat untuk terhubung dengan kami. Tersedia setiap hari kerja.', value: settings.site_phone || '+62 812-xxxx-xxxx', cta: 'Buka WhatsApp →', href: `https://wa.me/${settings.site_wa || '6282177832648'}` },
-    { icon: '📞', iconClass: 'green', label: 'Telepon', title: 'Telepon Kantor', desc: 'Hubungi langsung kantor pesantren pada jam operasional yang tertera.', value: '+62 321-xxx-xxxx', cta: 'Hubungi Sekarang →', href: 'tel:+62321000000' },
+    { icon: '📞', iconClass: 'green', label: 'Telepon', title: 'Telepon Kantor', desc: 'Hubungi langsung kantor pesantren pada jam operasional yang tertera.', value: '+62 821-xxx-xxxx', cta: 'Hubungi Sekarang →', href: 'tel:+62321000000' },
     { icon: '✉️', iconClass: 'mail', label: 'Email', title: 'Kirim Email', desc: 'Untuk keperluan surat-menyurat resmi, proposal, atau kerja sama institusi.', value: 'info@ppanurmuhammad.web.id', cta: 'Kirim Email →', href: 'mailto:info@ppanurmuhammad.web.id' },
     { icon: '📍', iconClass: 'gold', label: 'Lokasi', title: 'Kunjungi Kami', desc: 'Datang langsung ke pesantren untuk konsultasi tatap muka.', value: 'Wonoayu, Mojoagung, Jombang', cta: 'Buka Peta →', href: 'https://maps.app.goo.gl/wg9MbnnS4Uqvb43L8' },
   ]
@@ -36,10 +36,10 @@ export default function Kontak() {
   ]
 
  const sosmed = [
-  { cls: 'ig', icon: '📸', name: 'Instagram', handle: '@pptq_nurmuhammad_official', follow: 'Ikuti', href: 'https://www.instagram.com/pptq_nurmuhammad_official' },
-  { cls: 'fb', icon: '📘', name: 'Facebook', handle: 'Pesantren Nur Muhammad', follow: 'Suka', href: '#' },
-  { cls: 'yt', icon: '▶️', name: 'YouTube', handle: 'PPTQ Nur Muhammad Official', follow: 'Subscribe', href: 'https://youtube.com/@pptqnurmuhammadofficial3453' },
-  { cls: 'tw', icon: '🎵', name: 'TikTok', handle: '@pptq_nurmuhammad_', follow: 'Ikuti', href: 'https://www.tiktok.com/@pptq_nurmuhammad_' },
+  { cls: 'ig', icon: <i className="fa-brands fa-instagram" />, name: 'Instagram', handle: '@pptq_nurmuhammad_official', follow: 'Ikuti', href: 'https://www.instagram.com/pptq_nurmuhammad_official' },
+  { cls: 'fb', icon: <i className="fa-brands fa-facebook" />, name: 'Facebook', handle: 'Pesantren Nur Muhammad', follow: 'Suka', href: '#' },
+  { cls: 'yt', icon: <i className="fa-brands fa-youtube" />, name: 'YouTube', handle: 'PPTQ Nur Muhammad Official', follow: 'Subscribe', href: 'https://youtube.com/@pptqnurmuhammadofficial3453' },
+  { cls: 'tw', icon: <i className="fa-brands fa-tiktok" />, name: 'TikTok', handle: '@pptq_nurmuhammad_', follow: 'Ikuti', href: 'https://www.tiktok.com/@pptq_nurmuhammad_' },
 ]
 
   return (
