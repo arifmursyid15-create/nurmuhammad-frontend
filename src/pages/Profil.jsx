@@ -3,7 +3,7 @@ import '../styles/profil.css'
 
 export default function Profil() {
   const timeline = [
-    { year: '2004', title: 'Pesantren Berdiri', desc: 'Didirikan oleh KH. Muhammad Nur Hasyim dengan belasan santri perdana di Wonoayu, Jombang.' },
+    { year: '2004', title: 'Pesantren Berdiri', desc: 'Didirikan oleh Kyai Agus Kamaludin Ismail Al-Hafidz dengan belasan santri perdana di Wonoayu, Jombang.' },
     { year: '2007', title: 'SMP Nur Muhammad Dibuka', desc: 'Unit pendidikan formal pertama resmi beroperasi dengan akreditasi dari Kemendikbud.' },
     { year: '2011', title: 'MA Nur Muhammad Berdiri', desc: 'Jenjang madrasah aliyah hadir untuk melanjutkan pembinaan santri lulusan SMP.' },
     { year: '2016', title: 'Program Tahfidz Murni', desc: "Program intensif hafalan Al-Qur'an 30 juz khusus pasca SMA/MA resmi dibuka." },
@@ -175,52 +175,73 @@ export default function Profil() {
         </div>
 
         {/* ─── PENGASUH ─── */}
-        <div className="pengasuh-section">
-          <div className="sec-eyebrow">Ketua Yayasan</div>
-          <h2 className="sec-title" style={{ marginBottom: '1.5rem' }}>Amanat Ketua Yayasan</h2>
-          <div className="pengasuh-card">
-            <div className="pengasuh-inner">
-              <div className="pengasuh-left">
-                <div className="pengasuh-avatar">👳</div>
-                <div className="pengasuh-name">KH. Muhammad Nur Hasyim, Lc.</div>
-                <div className="pengasuh-title">Ketua Yayasan Nur Muhammad</div>
-                <div className="pengasuh-status">Aktif membimbing & mengajar</div>
-                <div className="pengasuh-tags">
-                  {pengasuhTags.map(t => (
-                    <span key={t} className="pengasuh-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="pengasuh-right">
-                <div className="pengasuh-eyebrow">Amanat Ketua Yayasan</div>
-                <h3 className="pengasuh-heading">Pesan untuk Para Santri dan Wali Santri</h3>
-                <p className="pengasuh-bio">
-                  Alumni Al-Azhar Kairo, Mesir. Mendirikan Pesantren Nur Muhammad pada tahun 2004 dengan tekad
-                  mencetak generasi muslim yang unggul. Selama lebih dari 20 tahun, beliau telah membimbing
-                  ribuan santri dan menjadi panutan bagi masyarakat Jombang dan sekitarnya.
-                </p>
-                <span className="pengasuh-quote-mark">"</span>
-                <p className="pengasuh-quote">
-                  Pesantren bukan sekadar tempat belajar ilmu — ia adalah{' '}
-                  <strong>rumah kedua yang membentuk jiwa</strong>. Kami hadir bukan hanya untuk mencerdaskan
-                  akal, tetapi juga untuk menempa hati agar kelak para santri menjadi manusia yang berilmu,
-                  berakhlak mulia, dan bermanfaat bagi agama serta bangsa.
-                  <br /><br />
-                  Setiap santri yang masuk ke sini membawa amanah dari orang tuanya. Amanah itu kami emban
-                  dengan sepenuh hati, dengan harapan kelak mereka pulang membawa kebanggaan — bukan hanya
-                  bagi keluarga, tapi bagi <strong>umat Islam seluruhnya</strong>.
-                </p>
-                <div className="pengasuh-attr">
-                  <div className="pengasuh-attr-line" />
-                  <div>
-                    <div className="pengasuh-attr-name">KH. Muhammad Nur Hasyim, Lc.</div>
-                    <div className="pengasuh-attr-role">Ketua Yayasan Nur Muhammad</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<div className="pengasuh-section">
+  <div className="sec-eyebrow">Ketua Yayasan</div>
+  <h2 className="sec-title" style={{ marginBottom: '1.5rem' }}>Amanat Ketua Yayasan</h2>
+  <div className="pengasuh-card">
+    <div className="pengasuh-inner">
+      <div className="pengasuh-left" style={{
+        backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '16px',
+        minHeight: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: '2rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
+          borderRadius: '16px'
+        }} />
+        <img
+          src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
+          alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
+          style={{
+            width: '140px', height: '140px', borderRadius: '50%',
+            objectFit: 'cover', border: '4px solid #c8a951',
+            position: 'relative', zIndex: 1, marginBottom: '1rem'
+          }}
+        />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>Kyai Agus Kamaludin Ismail Al-Hafidz</div>
+          <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>Ketua Yayasan & Pengasuh Pesantren</div>
+        </div>
+      </div>
+      <div className="pengasuh-right">
+        <div className="pengasuh-eyebrow">Amanat Ketua Yayasan</div>
+        <h3 className="pengasuh-heading">Pesan untuk Para Santri dan Wali Santri</h3>
+        <p className="pengasuh-bio">
+          Mendirikan Pesantren Nur Muhammad pada tahun 2004 dengan tekad
+          mencetak generasi muslim yang unggul. Selama lebih dari 20 tahun, beliau telah membimbing
+          ribuan santri dan menjadi panutan bagi masyarakat Jombang dan sekitarnya.
+        </p>
+        <span className="pengasuh-quote-mark">"</span>
+        <p className="pengasuh-quote">
+          Pesantren bukan sekadar tempat belajar ilmu — ia adalah{' '}
+          <strong>rumah kedua yang membentuk jiwa</strong>. Kami hadir bukan hanya untuk mencerdaskan
+          akal, tetapi juga untuk menempa hati agar kelak para santri menjadi manusia yang berilmu,
+          berakhlak mulia, dan bermanfaat bagi agama serta bangsa.
+          <br /><br />
+          Setiap santri yang masuk ke sini membawa amanah dari orang tuanya. Amanah itu kami emban
+          dengan sepenuh hati, dengan harapan kelak mereka pulang membawa kebanggaan — bukan hanya
+          bagi keluarga, tapi bagi <strong>umat Islam seluruhnya</strong>.
+        </p>
+        <div className="pengasuh-attr">
+          <div className="pengasuh-attr-line" />
+          <div>
+            <div className="pengasuh-attr-name">Kyai Agus Kamaludin Ismail Al-Hafidz</div>
+            <div className="pengasuh-attr-role">Ketua Yayasan Nur Muhammad</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* ─── FASILITAS ─── */}
         <div className="fasilitas-section">
