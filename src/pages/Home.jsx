@@ -135,7 +135,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="ky-profile-card" style={{
+      {/* ─── KETUA YAYASAN ─── */}
+      <section className="section kyayasan-section">
+        <div className="kyayasan-inner">
+          <div className="ky-profile-card" style={{
   backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
@@ -169,6 +172,36 @@ export default function Home() {
     <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>Ketua Yayasan & Pengasuh Pesantren</div>
   </div>
 </div>
+
+          <div className="ky-amanat">
+            <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
+            <h2 className="ky-heading">
+              Pesan untuk Para Santri<br />dan Keluarga Besar Pesantren
+            </h2>
+            <span className="ky-quote-mark">"</span>
+            <p className="ky-quote-text">
+              Pesantren bukan sekadar tempat belajar ilmu — ia adalah{' '}
+              <strong>rumah kedua yang membentuk jiwa</strong>. Kami hadir bukan hanya
+              untuk mencerdaskan akal, tetapi juga untuk menempa hati agar kelak para
+              santri menjadi manusia yang berilmu, berakhlak mulia, dan bermanfaat bagi
+              agama serta bangsa.
+              <br /><br />
+              Setiap santri yang masuk ke sini membawa amanah dari orang tuanya. Amanah
+              itu kami emban dengan sepenuh hati, dengan harapan kelak mereka pulang
+              membawa kebanggaan — bukan hanya bagi keluarga, tapi bagi{' '}
+              <strong>umat Islam seluruhnya</strong>.
+            </p>
+            <div className="ky-attribution">
+              <div className="ky-attr-line" />
+              <div>
+                <div className="ky-attr-name">Kyai Agus Kamaludin Ismail Al-Hafidz</div>
+                <div className="ky-attr-role">Ketua Yayasan & Pengasuh Nur Muhammad</div>
+              </div>
+            </div>
+            <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
+          </div>
+        </div>
+      </section>
 
       {/* ─── UNIT PENDIDIKAN ─── */}
       <section className="section">
