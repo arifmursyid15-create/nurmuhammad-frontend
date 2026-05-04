@@ -1,5 +1,6 @@
 ﻿import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
+import ScrollToTop from '../components/ScrollToTop'
 
 import Home from '../pages/Home'
 import Profil from '../pages/Profil'
@@ -25,6 +26,7 @@ import RequireAuth from '../components/admin/RequireAuth'
 export default function AppRouter() {
   return (
     <BrowserRouter>
+    <ScrollToTop />  {/* ← tambahkan di sini */}
       <Routes>
         {/* Public */}
         <Route element={<Layout />}>
