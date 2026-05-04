@@ -117,6 +117,44 @@ export default function AdminPengaturan() {
           </div>
         </div>
 
+        {/* Foto Hero Slider */}
+<div className="admin-card" style={{ gridColumn: '1 / -1' }}>
+  <div className="admin-card-header"><h3>🎠 Foto Hero Slider</h3></div>
+  <div className="admin-card-body">
+    {[1, 2, 3].map(n => (
+      <div key={n} style={{ background: '#f7fafc', borderRadius: '10px', padding: '1rem', marginBottom: '0.75rem' }}>
+        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#4a5568', marginBottom: '0.75rem' }}>Slide {n}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="admin-fg" style={{ marginBottom: 0 }}>
+            <label>URL Foto Background</label>
+            <input
+              type="text"
+              value={settings[`slide_${n}_bg`] || ''}
+              onChange={e => update(`slide_${n}_bg`, e.target.value)}
+              placeholder="https://res.cloudinary.com/..."
+            />
+            {settings[`slide_${n}_bg`] && (
+              <img src={settings[`slide_${n}_bg`]} alt={`bg ${n}`} style={{ marginTop: '0.5rem', width: '100%', borderRadius: '8px', maxHeight: '100px', objectFit: 'cover' }} />
+            )}
+          </div>
+          <div className="admin-fg" style={{ marginBottom: 0 }}>
+            <label>URL Foto Ilustrasi</label>
+            <input
+              type="text"
+              value={settings[`slide_${n}_img`] || ''}
+              onChange={e => update(`slide_${n}_img`, e.target.value)}
+              placeholder="https://res.cloudinary.com/..."
+            />
+            {settings[`slide_${n}_img`] && (
+              <img src={settings[`slide_${n}_img`]} alt={`img ${n}`} style={{ marginTop: '0.5rem', width: '100%', borderRadius: '8px', maxHeight: '100px', objectFit: 'cover' }} />
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
         {/* Media Sosial */}
         <div className="admin-card">
           <div className="admin-card-header"><h3>📱 Media Sosial</h3></div>

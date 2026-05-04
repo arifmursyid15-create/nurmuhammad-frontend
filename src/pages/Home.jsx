@@ -7,27 +7,33 @@ import { getPublicSettings } from '../api/settings'
 
 // ✅ FIX 1: Pindah ke luar komponen supaya stabil (tidak dibuat ulang tiap render)
 // ✅ FIX 2: title diubah jadi fungsi supaya JSX tidak inline di object literal
-const SLIDES = [
+const slides = [
   {
     tag: 'Pesantren Modern Berbasis Salaf',
-    title: () => <>'Membentuk Generasi<br /><em>Berakhlak & Berprestasi</em></>,
+    title: <>'Membentuk Generasi<br /><em>Berakhlak & Berprestasi</em></>,
     desc: 'Pesantren Nur Muhammad hadir dengan tiga program unggulan — membina santri yang berilmu, beriman, dan bermanfaat bagi umat.',
     cta1: { label: 'Pelajari Lebih Lanjut', to: '/profil' },
     cta2: { label: 'Daftar PPDB', to: '/ppdb' },
+    bg: settings.slide_1_bg || '',
+    img: settings.slide_1_img || '',
   },
   {
     tag: "Program Tahfidz Al-Qur'an",
-    title: () => <>Hafal 30 Juz dengan<br /><em>Bimbingan Terbaik</em></>,
+    title: <>Hafal 30 Juz dengan<br /><em>Bimbingan Terbaik</em></>,
     desc: "Program Tahfidz Murni kami dirancang intensif untuk santri pasca SMA/MA yang ingin mengabdikan diri menghafal Al-Qur'an.",
     cta1: { label: 'Lihat Program Tahfidz', to: '/unit/tahfidz-murni' },
     cta2: { label: 'Daftar Sekarang', to: '/ppdb' },
+    bg: settings.slide_2_bg || '',
+    img: settings.slide_2_img || '',
   },
   {
     tag: 'PPDB 2026/2027 Dibuka',
-    title: () => <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
+    title: <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
     desc: 'Pendaftaran online mudah dan cepat. Pilih program SMP, MA, atau Tahfidz Murni — putra maupun putri.',
     cta1: { label: 'Daftar Online', to: '/ppdb' },
     cta2: { label: 'Cek Pendaftaran', to: '/ppdb/cek' },
+    bg: settings.slide_3_bg || '',
+    img: settings.slide_3_img || '',
   },
 ]
 
@@ -97,36 +103,55 @@ export default function Home() {
 
   return (
     <>
-      {/* ─── HERO ─── */}
-      <section className="hero">
-        <div className="hero-bg-pattern" />
-        <div className="hero-arabic">ن</div>
-        <div className="hero-slider">
-          {SLIDES.map((slide, i) => (
-            <div key={i} className={`slide ${i === currentSlide ? 'active' : ''}`}>
-              <div className="slide-tag">{slide.tag}</div>
-              {/* ✅ FIX 5: Panggil title sebagai fungsi */}
-              <h1>{slide.title()}</h1>
-              <p>{slide.desc}</p>
-              <div className="slide-cta">
-                <Link to={slide.cta1.to} className="btn-hero-primary">{slide.cta1.label}</Link>
-                <Link to={slide.cta2.to} className="btn-hero-outline">{slide.cta2.label}</Link>
-              </div>
-            </div>
-          ))}
+      <section className="hero" style={slides[currentSlide].bg ? {
+  backgroundImage: `url(${slides[currentSlide].bg})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+} : {}}>
+  <div className="hero-bg-pattern" />
+  <div className="hero-arabic">ن</div>
+  <div className="hero-slider" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+    {slides.map((slide, i) => (
+      <div key={i} className={`slide ${i === currentSlide ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '2rem', width: '100%' }}>
+        <div style={{ flex: 1 }}>
+          <div className="slide-tag">{slide.tag}</div>
+          <h1>{slide.title}</h1>
+          <p>{slide.desc}</p>
+          <div className="slide-cta">
+            <Link to={slide.cta1.to} className="btn-hero-primary">{slide.cta1.label}</Link>
+            <Link to={slide.cta2.to} className="btn-hero-outline">{slide.cta2.label}</Link>
+          </div>
         </div>
-        <div className="hero-controls">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
-              onClick={() => setCurrentSlide(i)}
+        {slide.img && (
+          <div style={{ flex: '0 0 320px' }}>
+            <img
+              src={slide.img}
+              alt={slide.tag}
+              style={{
+                width: '100%',
+                borderRadius: '16px',
+                objectFit: 'cover',
+                maxHeight: '380px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+              }}
             />
-          ))}
-          <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p - 1 + SLIDES.length) % SLIDES.length)}>‹</button>
-          <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p + 1) % SLIDES.length)}>›</button>
-        </div>
-      </section>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+  <div className="hero-controls">
+    {slides.map((_, i) => (
+      <button
+        key={i}
+        className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
+        onClick={() => setCurrentSlide(i)}
+      />
+    ))}
+    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p - 1 + slides.length) % slides.length)}>‹</button>
+    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p + 1) % slides.length)}>›</button>
+  </div>
+</section>
 
       {/* ─── STATS ─── */}
       <div className="stats-bar">
