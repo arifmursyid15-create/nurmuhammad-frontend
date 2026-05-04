@@ -2,15 +2,23 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/home.css'
 import { getLatestArticles } from '../api/articles'
+import { getGallery } from '../api/gallery'
 
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [berita, setBerita] = useState([])
+  const [galeri, setGaleri] = useState([])
 
         useEffect(() => {
           getLatestArticles()
             .then(res => setBerita(res.data || []))
+            .catch(() => {})
+        }, [])
+
+        useEffect(() => {
+          getGallery()
+            .then(res => setGaleri(res.data || []))
             .catch(() => {})
         }, [])
 
@@ -81,14 +89,6 @@ export default function Home() {
     { icon: '📜', title: 'Kurikulum Terpadu', desc: 'Mengintegrasikan kurikulum nasional dengan kurikulum pesantren secara seimbang.' },
     { icon: '🤝', title: 'Pembinaan Karakter', desc: 'Program pembiasaan akhlak mulia, disiplin, dan kemandirian yang diterapkan sehari-hari.' },
     { icon: '🏆', title: 'Prestasi Akademik', desc: 'Santri berprestasi di berbagai kompetisi tingkat kabupaten hingga nasional.' },
-  ]
-
-  const galeri = [
-    { icon: '📸', label: 'Kegiatan Pembelajaran' },
-    { icon: '🎓', label: 'Upacara & Haflah' },
-    { icon: '📖', label: 'Kelas Tahfidz' },
-    { icon: '⚽', label: 'Ekstrakurikuler' },
-    { icon: '🏠', label: 'Asrama Santri' },
   ]
 
  
@@ -256,25 +256,44 @@ export default function Home() {
       </section>
 
       {/* ─── GALERI ─── */}
-      <section className="section galeri-section">
-        <div className="section-inner">
-          <div className="section-header-row">
-            <div>
-              <div className="section-eyebrow">Galeri</div>
-              <h2 className="section-title">Kehidupan di Pesantren</h2>
+<section className="section galeri-section">
+  <div className="section-inner">
+    <div className="section-header-row">
+      <div>
+        <div className="section-eyebrow">Galeri</div>
+        <h2 className="section-title">Kehidupan di Pesantren</h2>
+      </div>
+      <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
+    </div>
+
+    {galeri.length === 0 ? (
+      <div className="galeri-grid">
+        {['Kegiatan Pembelajaran', 'Upacara & Haflah', 'Kelas Tahfidz', 'Ekstrakurikuler', 'Asrama Santri'].map(label => (
+          <div key={label} className="galeri-item">
+            <div className="galeri-thumb">📸</div>
+            <div className="galeri-label">{label}</div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="galeri-grid">
+        {galeri.slice(0, 5).map(photo => (
+          <div key={photo.id} className="galeri-item">
+            <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
+              <img
+                src={photo.path}
+                alt={photo.title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
             </div>
-            <a href="#" className="link-all">Lihat semua foto →</a>
+            <div className="galeri-label">{photo.title}</div>
           </div>
-          <div className="galeri-grid">
-            {galeri.map(g => (
-              <div key={g.label} className="galeri-item">
-                <div className="galeri-thumb">{g.icon}</div>
-                <div className="galeri-label">{g.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
 
       {/* ─── BERITA ─── */}
 <section className="section">
