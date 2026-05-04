@@ -1,401 +1,398 @@
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import '../styles/home.css'
+/**
+ * Unit Test: Home.jsx
+ * Framework : Jest + React Testing Library
+ * Jalankan  : npx jest Home.test.jsx  (atau via `npm test`)
+ *
+ * Dependensi yang dibutuhkan (jika belum ada):
+ *   npm install -D @testing-library/react @testing-library/user-event @testing-library/jest-dom jest-environment-jsdom
+ */
+
+import React from 'react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import '@testing-library/jest-dom'
+
+import Home from './Home'
+
+// ─── Mock CSS ────────────────────────────────────────────────────────────────
+// Mencegah error "Cannot find module '*.css'"
+jest.mock('../styles/home.css', () => {}, { virtual: true })
+
+// ─── Mock API modules ─────────────────────────────────────────────────────────
+jest.mock('../api/articles', () => ({
+  getLatestArticles: jest.fn(),
+}))
+jest.mock('../api/gallery', () => ({
+  getGallery: jest.fn(),
+}))
+jest.mock('../api/settings', () => ({
+  getPublicSettings: jest.fn(),
+}))
+
 import { getLatestArticles } from '../api/articles'
-import { getGallery } from '../api/gallery'
+import { getGallery }        from '../api/gallery'
 import { getPublicSettings } from '../api/settings'
 
-export default function Home() {
-const [currentSlide, setCurrentSlide] = useState(0)
-const [berita, setBerita] = useState([])
-const [galeri, setGaleri] = useState([])
-const [settings, setSettings] = useState({})  // ← harus sebelum slidess
-
-// ✅ FIX 1: Pindah ke luar komponen supaya stabil (tidak dibuat ulang tiap render)
-// ✅ FIX 2: title diubah jadi fungsi supaya JSX tidak inline di object literal
-const slides = [
+// ─── Fixture data ─────────────────────────────────────────────────────────────
+const MOCK_ARTICLES = [
   {
-    tag: 'Pesantren Modern Berbasis Salaf',
-    title: <>'Membentuk Generasi<br /><em>Berakhlak & Berprestasi</em></>,
-    desc: 'Pesantren Nur Muhammad hadir dengan tiga program unggulan — membina santri yang berilmu, beriman, dan bermanfaat bagi umat.',
-    cta1: { label: 'Pelajari Lebih Lanjut', to: '/profil' },
-    cta2: { label: 'Daftar PPDB', to: '/ppdb' },
-    bg: settings.slide_1_bg || '',
-    img: settings.slide_1_img || '',
+    slug        : 'artikel-1',
+    title       : 'Berita Pertama',
+    thumbnail   : 'https://example.com/thumb1.jpg',
+    published_at: '2026-01-15T00:00:00Z',
+    category    : { name: 'Kegiatan' },
   },
   {
-    tag: "Program Tahfidz Al-Qur'an",
-    title: <>Hafal 30 Juz dengan<br /><em>Bimbingan Terbaik</em></>,
-    desc: "Program Tahfidz Murni kami dirancang intensif untuk santri pasca SMA/MA yang ingin mengabdikan diri menghafal Al-Qur'an.",
-    cta1: { label: 'Lihat Program Tahfidz', to: '/unit/tahfidz-murni' },
-    cta2: { label: 'Daftar Sekarang', to: '/ppdb' },
-    bg: settings.slide_2_bg || '',
-    img: settings.slide_2_img || '',
-  },
-  {
-    tag: 'PPDB 2026/2027 Dibuka',
-    title: <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
-    desc: 'Pendaftaran online mudah dan cepat. Pilih program SMP, MA, atau Tahfidz Murni — putra maupun putri.',
-    cta1: { label: 'Daftar Online', to: '/ppdb' },
-    cta2: { label: 'Cek Pendaftaran', to: '/ppdb/cek' },
-    bg: settings.slide_3_bg || '',
-    img: settings.slide_3_img || '',
+    slug      : 'artikel-2',
+    title     : 'Berita Kedua',
+    thumbnail : null,
+    created_at: '2026-02-01T00:00:00Z',
+    category  : null,
   },
 ]
 
-const stats = [
-  { num: '500+', label: 'Santri Aktif' },
-  { num: '3', label: 'Program Unggulan' },
-  { num: '20+', label: 'Tahun Berdiri' },
-  { num: '98%', label: "Khatam Al-Qur'an" },
+const MOCK_GALLERY = [
+  { id: 1, path: 'https://example.com/foto1.jpg', title: 'Foto Kegiatan' },
+  { id: 2, path: 'https://example.com/foto2.jpg', title: 'Foto Upacara' },
+  { id: 3, path: null,                            title: 'Foto Tanpa Path' },
 ]
 
-const units = [
-  {
-    badge: 'Jenjang SMP', icon: '🏫', name: 'SMP Nur Muhammad',
-    desc: "Sekolah menengah pertama berbasis pesantren dengan program unggulan tahfidzul Qur'an dan kurikulum Kemendikbud.",
-    chips: ['Putra & Putri', 'Tahfidz', '3 Tahun'],
-    to: '/unit/smp',
-  },
-  {
-    badge: 'Jenjang MA', icon: '📚', name: 'MA Nur Muhammad',
-    desc: 'Madrasah Aliyah setara SMA dengan penekanan ilmu keislaman, bahasa Arab, dan persiapan perguruan tinggi.',
-    chips: ['Putra & Putri', 'Kitab Kuning', '3 Tahun'],
-    to: '/unit/ma',
-  },
-  {
-    badge: 'Pasca SMA / MA', icon: '📖', name: 'Tahfidz Murni',
-    desc: "Program intensif menghafal Al-Qur'an 30 juz pasca SMA/MA, dibimbing langsung oleh pengasuh berpengalaman.",
-    chips: ['Putra & Putri', '30 Juz', 'Intensif'],
-    to: '/unit/tahfidz-murni',
-  },
-]
-
-const keunggulan = [
-  { icon: '🕌', title: 'Lingkungan Islami', desc: 'Suasana pesantren yang kental dengan nilai-nilai Islam di setiap aspek kehidupan santri.' },
-  { icon: '👨‍🏫', title: 'Pengajar Berkualitas', desc: 'Ustadz dan ustadzah berpengalaman dengan sanad keilmuan yang jelas dan terpercaya.' },
-  { icon: '🏠', title: 'Asrama Nyaman', desc: 'Fasilitas asrama terpisah putra-putri yang bersih, aman, dan nyaman untuk belajar.' },
-  { icon: '📜', title: 'Kurikulum Terpadu', desc: 'Mengintegrasikan kurikulum nasional dengan kurikulum pesantren secara seimbang.' },
-  { icon: '🤝', title: 'Pembinaan Karakter', desc: 'Program pembiasaan akhlak mulia, disiplin, dan kemandirian yang diterapkan sehari-hari.' },
-  { icon: '🏆', title: 'Prestasi Akademik', desc: 'Santri berprestasi di berbagai kompetisi tingkat kabupaten hingga nasional.' },
-]
-
-  // ✅ FIX 3: Gabungkan 3 fetch jadi satu useEffect dengan Promise.all
-  useEffect(() => {
-    Promise.all([
-      getLatestArticles().catch(() => ({ data: [] })),
-      getGallery().catch(() => ({ data: [] })),
-      getPublicSettings().catch(() => ({ data: {} })),
-    ]).then(([artikelRes, galeriRes, settingsRes]) => {
-      setBerita(artikelRes.data || [])
-      setGaleri(galeriRes.data || [])
-      setSettings(settingsRes.data || {})
-    })
-  }, [])
-
-  // ✅ FIX 4: Dependency array kosong karena SLIDES sudah stabil di luar komponen
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % SLIDES.length)
-    }, 5500)
-    return () => clearInterval(timer)
-  }, [])
-
-  return (
-    <>
-      <section className="hero" style={slides[currentSlide].bg ? {
-  backgroundImage: `url(${slides[currentSlide].bg})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-} : {}}>
-  <div className="hero-bg-pattern" />
-  <div className="hero-arabic">ن</div>
-  <div className="hero-slider" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-    {slides.map((slide, i) => (
-      <div key={i} className={`slide ${i === currentSlide ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '2rem', width: '100%' }}>
-        <div style={{ flex: 1 }}>
-          <div className="slide-tag">{slide.tag}</div>
-          <h1>{slide.title}</h1>
-          <p>{slide.desc}</p>
-          <div className="slide-cta">
-            <Link to={slide.cta1.to} className="btn-hero-primary">{slide.cta1.label}</Link>
-            <Link to={slide.cta2.to} className="btn-hero-outline">{slide.cta2.label}</Link>
-          </div>
-        </div>
-        {slide.img && (
-          <div style={{ flex: '0 0 320px' }}>
-            <img
-              src={slide.img}
-              alt={slide.tag}
-              style={{
-                width: '100%',
-                borderRadius: '16px',
-                objectFit: 'cover',
-                maxHeight: '380px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-              }}
-            />
-          </div>
-        )}
-      </div>
-    ))}
-  </div>
-  <div className="hero-controls">
-    {slides.map((_, i) => (
-      <button
-        key={i}
-        className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
-        onClick={() => setCurrentSlide(i)}
-      />
-    ))}
-    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p - 1 + slides.length) % slides.length)}>‹</button>
-    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p + 1) % slides.length)}>›</button>
-  </div>
-</section>
-
-      {/* ─── STATS ─── */}
-      <div className="stats-bar">
-        <div className="stats-inner">
-          {stats.map(s => (
-            <div key={s.label} className="stat-item">
-              <div className="stat-num">{s.num}</div>
-              <div className="stat-label">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ─── KETUA YAYASAN ─── */}
-      <section className="section kyayasan-section">
-        <div className="kyayasan-inner">
-
-          {/* ✅ FIX 6: ky-profile-card sekarang ditutup dengan benar sebelum ky-amanat */}
-          <div className="ky-profile-card" style={{
-            backgroundImage: `url(${settings.hero_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg'})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            borderRadius: '16px',
-            minHeight: '400px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem',
-            position: 'relative',
-            overflow: 'hidden',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
-              borderRadius: '16px'
-            }} />
-            <img
-              src={settings.pengasuh_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg'}
-              alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
-              style={{
-                width: '160px', height: '200px', borderRadius: '12px',
-                objectFit: 'cover', border: '4px solid #c8a951',
-                position: 'relative', zIndex: 1, marginBottom: '1rem'
-              }}
-            />
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>
-                {settings.pengasuh_nama || 'Kyai Agus Kamaludin Ismail Al-Hafidz'}
-              </div>
-              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>
-                {settings.pengasuh_jabatan || 'Ketua Yayasan & Pengasuh Pesantren'}
-              </div>
-            </div>
-          </div>
-          {/* ──────────────────────────────────────────────── */}
-
-          <div className="ky-amanat">
-            <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
-            <h2 className="ky-heading">
-              Pesan untuk Para Santri<br />dan Keluarga Besar Pesantren
-            </h2>
-            <span className="ky-quote-mark">"</span>
-            <p className="ky-quote-text">
-              Pesantren bukan sekadar tempat belajar ilmu — ia adalah{' '}
-              <strong>rumah kedua yang membentuk jiwa</strong>. Kami hadir bukan hanya
-              untuk mencerdaskan akal, tetapi juga untuk menempa hati agar kelak para
-              santri menjadi manusia yang berilmu, berakhlak mulia, dan bermanfaat bagi
-              agama serta bangsa.
-              <br /><br />
-              Setiap santri yang masuk ke sini membawa amanah dari orang tuanya. Amanah
-              itu kami emban dengan sepenuh hati, dengan harapan kelak mereka pulang
-              membawa kebanggaan — bukan hanya bagi keluarga, tapi bagi{' '}
-              <strong>umat Islam seluruhnya</strong>.
-            </p>
-            <div className="ky-attribution">
-              <div className="ky-attr-line" />
-              <div>
-                <div className="ky-attr-name">{settings.pengasuh_nama || 'Kyai Agus Kamaludin Ismail Al-Hafidz'}</div>
-                <div className="ky-attr-role">{settings.pengasuh_jabatan || 'Ketua Yayasan & Pengasuh Pesantren'}</div>
-              </div>
-            </div>
-            <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ─── UNIT PENDIDIKAN ─── */}
-      <section className="section">
-        <div className="section-inner">
-          <div className="section-header-row">
-            <div>
-              <div className="section-eyebrow">Unit Pendidikan</div>
-              <h2 className="section-title">Tiga Program Unggulan</h2>
-              <p className="section-sub">Setiap unit dirancang untuk membentuk santri yang unggul akademik sekaligus kokoh keimanannya.</p>
-            </div>
-            <Link to="/berita" className="link-all">Lihat semua →</Link>
-          </div>
-          <div className="units-grid">
-            {units.map(unit => (
-              <div key={unit.name} className="unit-card">
-                <div className="unit-card-top">
-                  <div className="unit-badge">{unit.badge}</div>
-                  <h3>{unit.icon} {unit.name}</h3>
-                </div>
-                <div className="unit-card-body">
-                  <p>{unit.desc}</p>
-                  <div className="unit-chips">
-                    {unit.chips.map(c => <span key={c} className="chip">{c}</span>)}
-                  </div>
-                  <Link to={unit.to} className="unit-link">Selengkapnya →</Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── KEUNGGULAN ─── */}
-      <section className="section keunggulan-section">
-        <div className="section-inner">
-          <div className="section-header">
-            <div className="section-eyebrow">Keunggulan Kami</div>
-            <h2 className="section-title">Mengapa Nur Muhammad?</h2>
-          </div>
-          <div className="keunggulan-grid">
-            {keunggulan.map(k => (
-              <div key={k.title} className="keunggulan-card">
-                <div className="keunggulan-icon">{k.icon}</div>
-                <h4>{k.title}</h4>
-                <p>{k.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── GALERI ─── */}
-      <section className="section galeri-section">
-        <div className="section-inner">
-          <div className="section-header-row">
-            <div>
-              <div className="section-eyebrow">Galeri</div>
-              <h2 className="section-title">Kehidupan di Pesantren</h2>
-            </div>
-            <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
-          </div>
-
-          {galeri.length === 0 ? (
-            <div className="galeri-grid">
-              {['Kegiatan Pembelajaran', 'Upacara & Haflah', 'Kelas Tahfidz', 'Ekstrakurikuler', 'Asrama Santri'].map(label => (
-                <div key={label} className="galeri-item">
-                  <div className="galeri-thumb">📸</div>
-                  <div className="galeri-label">{label}</div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="galeri-grid">
-              {galeri.slice(0, 5).map(photo => (
-                <div key={photo.id} className="galeri-item">
-                  <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
-                    {/* ✅ FIX 7: Null check untuk photo.path */}
-                    {photo.path && (
-                      <img
-                        src={photo.path}
-                        alt={photo.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    )}
-                  </div>
-                  <div className="galeri-label">{photo.title}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ─── BERITA ─── */}
-      <section className="section">
-        <div className="section-inner">
-          <div className="section-header-row">
-            <div>
-              <div className="section-eyebrow">Berita & Artikel</div>
-              <h2 className="section-title">Kabar Terbaru</h2>
-            </div>
-            <Link to="/berita" className="link-all">Lihat semua →</Link>
-          </div>
-          <div className="berita-grid">
-            {berita.length === 0 ? (
-              <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Belum ada artikel.</p>
-            ) : berita.map(b => (
-              <div key={b.slug} className="berita-card">
-                <div className="berita-thumb">
-                  {b.thumbnail
-                    ? <img src={b.thumbnail} alt={b.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : '📰'
-                  }
-                </div>
-                <div className="berita-body">
-                  <span className="berita-cat">{b.category?.name || 'Artikel'}</span>
-                  <h3>{b.title}</h3>
-                  <div className="berita-meta">
-                    <span className="berita-date">
-                      {new Date(b.published_at || b.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </span>
-                    <Link to={`/berita/${b.slug}`} className="berita-link">Baca →</Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── CTA PPDB ─── */}
-      <section className="section cta-section">
-        <div className="cta-inner">
-          <div>
-            <div className="cta-eyebrow">PPDB 2026/2027 Masih Dibuka</div>
-            <h2 className="cta-title">Daftarkan Putra-Putri<br />Anda Sekarang</h2>
-            <p className="cta-desc">
-              Proses pendaftaran online mudah, cepat, dan bisa dipantau kapan saja.
-              Bergabunglah bersama ratusan santri Pesantren Nur Muhammad.
-            </p>
-            <div className="cta-btns">
-              <Link to="/ppdb" className="btn-cta-primary">Daftar Online Sekarang</Link>
-              <Link to="/ppdb/cek" className="btn-cta-outline">Cek Data Pendaftaran</Link>
-            </div>
-          </div>
-          <div className="cta-status">
-            <div className="cta-status-title">Status PPDB</div>
-            {['SMP Nur Muhammad', 'MA Nur Muhammad', 'Tahfidz Murni'].map(p => (
-              <div key={p} className="cta-status-item">
-                <span className="dot-open" /> {p} — Buka
-              </div>
-            ))}
-            <div className="cta-status-note">Putra & Putri · T.A. 2026/2027</div>
-          </div>
-        </div>
-      </section>
-    </>
-  )
+const MOCK_SETTINGS = {
+  slide_1_bg      : 'https://example.com/bg1.jpg',
+  slide_1_img     : 'https://example.com/img1.jpg',
+  pengasuh_nama   : 'KH. Test Pengasuh',
+  pengasuh_jabatan: 'Ketua Yayasan Test',
 }
+
+// ─── Helper ───────────────────────────────────────────────────────────────────
+/** Render Home di dalam MemoryRouter (diperlukan karena ada <Link>) */
+const renderHome = () =>
+  render(
+    <MemoryRouter>
+      <Home />
+    </MemoryRouter>
+  )
+
+/** Reset semua mock sebelum setiap test */
+beforeEach(() => {
+  jest.useFakeTimers()
+
+  getLatestArticles.mockResolvedValue({ data: MOCK_ARTICLES })
+  getGallery.mockResolvedValue({ data: MOCK_GALLERY })
+  getPublicSettings.mockResolvedValue({ data: MOCK_SETTINGS })
+})
+
+afterEach(() => {
+  jest.runOnlyPendingTimers()
+  jest.useRealTimers()
+  jest.clearAllMocks()
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 1. RENDER & FETCH
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Render awal & data fetching', () => {
+  test('komponen render tanpa crash', async () => {
+    await act(async () => { renderHome() })
+    // Jika tidak crash, test ini lulus
+  })
+
+  test('memanggil ketiga API saat mount', async () => {
+    await act(async () => { renderHome() })
+    expect(getLatestArticles).toHaveBeenCalledTimes(1)
+    expect(getGallery).toHaveBeenCalledTimes(1)
+    expect(getPublicSettings).toHaveBeenCalledTimes(1)
+  })
+
+  test('menampilkan artikel setelah fetch berhasil', async () => {
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Berita Pertama')).toBeInTheDocument()
+      expect(screen.getByText('Berita Kedua')).toBeInTheDocument()
+    })
+  })
+
+  test('menampilkan galeri foto setelah fetch berhasil', async () => {
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Foto Kegiatan')).toBeInTheDocument()
+      expect(screen.getByText('Foto Upacara')).toBeInTheDocument()
+    })
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2. SLIDER — Navigasi manual
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Hero slider — navigasi manual', () => {
+  test('slide pertama aktif saat pertama kali render', async () => {
+    await act(async () => { renderHome() })
+    // Slide pertama berisi teks tag-nya
+    expect(screen.getByText('Pesantren Modern Berbasis Salaf')).toBeInTheDocument()
+  })
+
+  test('tombol › memindah ke slide berikutnya', async () => {
+    await act(async () => { renderHome() })
+
+    const nextBtn = screen.getByText('›')
+    await act(async () => { fireEvent.click(nextBtn) })
+
+    expect(screen.getByText("Program Tahfidz Al-Qur'an")).toBeInTheDocument()
+  })
+
+  test('tombol ‹ dari slide pertama memutar ke slide terakhir', async () => {
+    await act(async () => { renderHome() })
+
+    const prevBtn = screen.getByText('‹')
+    await act(async () => { fireEvent.click(prevBtn) })
+
+    expect(screen.getByText('PPDB 2026/2027 Dibuka')).toBeInTheDocument()
+  })
+
+  test('klik dot kedua langsung pindah ke slide kedua', async () => {
+    await act(async () => { renderHome() })
+
+    // Ambil semua dot, klik yang ke-2 (index 1)
+    const dots = screen.getAllByRole('button', { name: '' })
+    const slideDots = dots.filter(btn =>
+      btn.className.includes('hero-dot')
+    )
+
+    await act(async () => { fireEvent.click(slideDots[1]) })
+    expect(screen.getByText("Program Tahfidz Al-Qur'an")).toBeInTheDocument()
+  })
+
+  test('slide ke-3 lalu › memutar kembali ke slide ke-1', async () => {
+    await act(async () => { renderHome() })
+
+    const nextBtn = screen.getByText('›')
+    // Maju 3 kali → kembali ke slide 1
+    await act(async () => {
+      fireEvent.click(nextBtn)
+      fireEvent.click(nextBtn)
+      fireEvent.click(nextBtn)
+    })
+
+    expect(screen.getByText('Pesantren Modern Berbasis Salaf')).toBeInTheDocument()
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3. SLIDER — Auto-advance (timer)
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Hero slider — auto-advance timer', () => {
+  /**
+   * ⚠️  CATATAN BUG: Kode asli mereferensikan `SLIDES` (huruf besar) di dalam
+   *  useEffect kedua, padahal variabel yang benar adalah `slides` (huruf kecil).
+   *  Akibatnya ReferenceError akan dilempar saat useEffect berjalan.
+   *  Test di bawah mendokumentasikan perilaku yang DIHARAPKAN setelah bug diperbaiki.
+   *  Tandai test ini sebagai .todo atau .skip hingga bug diperbaiki.
+   */
+  test.todo('auto-advance: slide berganti setiap 5500ms — aktifkan setelah bug SLIDES diperbaiki')
+
+  /*
+   * Contoh implementasi test jika bug sudah diperbaiki:
+   *
+   * test('slide berganti otomatis setiap 5500ms', async () => {
+   *   await act(async () => { renderHome() })
+   *   expect(screen.getByText('Pesantren Modern Berbasis Salaf')).toBeInTheDocument()
+   *
+   *   act(() => { jest.advanceTimersByTime(5500) })
+   *   expect(screen.getByText("Program Tahfidz Al-Qur'an")).toBeInTheDocument()
+   *
+   *   act(() => { jest.advanceTimersByTime(5500) })
+   *   expect(screen.getByText('PPDB 2026/2027 Dibuka')).toBeInTheDocument()
+   * })
+   *
+   * test('timer dibersihkan saat komponen di-unmount (tidak memory leak)', async () => {
+   *   const { unmount } = await act(async () => renderHome())
+   *   const clearSpy = jest.spyOn(global, 'clearInterval')
+   *   unmount()
+   *   expect(clearSpy).toHaveBeenCalled()
+   * })
+   */
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. CONDITIONAL RENDERING — State kosong
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Conditional rendering saat data kosong', () => {
+  test('menampilkan placeholder galeri jika galeri kosong', async () => {
+    getGallery.mockResolvedValue({ data: [] })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Kegiatan Pembelajaran')).toBeInTheDocument()
+      expect(screen.getByText('Upacara & Haflah')).toBeInTheDocument()
+    })
+  })
+
+  test('menampilkan pesan "Belum ada artikel" jika berita kosong', async () => {
+    getLatestArticles.mockResolvedValue({ data: [] })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Belum ada artikel.')).toBeInTheDocument()
+    })
+  })
+
+  test('galeri hanya menampilkan maks 5 foto', async () => {
+    const banyakFoto = Array.from({ length: 10 }, (_, i) => ({
+      id   : i,
+      path : `https://example.com/foto${i}.jpg`,
+      title: `Foto ${i}`,
+    }))
+    getGallery.mockResolvedValue({ data: banyakFoto })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      // Hanya foto ke-0 sampai ke-4 yang muncul
+      expect(screen.getByText('Foto 0')).toBeInTheDocument()
+      expect(screen.getByText('Foto 4')).toBeInTheDocument()
+      expect(screen.queryByText('Foto 5')).not.toBeInTheDocument()
+    })
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. CONDITIONAL RENDERING — Data dari settings
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Data dari settings API', () => {
+  test('menampilkan nama pengasuh dari settings jika tersedia', async () => {
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      // Nama muncul 2x (profile card + ky-attribution)
+      const els = screen.getAllByText('KH. Test Pengasuh')
+      expect(els.length).toBeGreaterThanOrEqual(1)
+    })
+  })
+
+  test('fallback ke nama default jika settings kosong', async () => {
+    getPublicSettings.mockResolvedValue({ data: {} })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(
+        screen.getAllByText('Kyai Agus Kamaludin Ismail Al-Hafidz').length
+      ).toBeGreaterThanOrEqual(1)
+    })
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. ARTICLE CARD — Edge case field opsional
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Artikel card — edge case field opsional', () => {
+  test('artikel tanpa thumbnail menampilkan emoji 📰', async () => {
+    getLatestArticles.mockResolvedValue({
+      data: [{ slug: 'no-thumb', title: 'Artikel Tanpa Thumbnail', thumbnail: null, created_at: '2026-01-01T00:00:00Z' }],
+    })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('📰')).toBeInTheDocument()
+    })
+  })
+
+  test('artikel tanpa category menampilkan fallback "Artikel"', async () => {
+    getLatestArticles.mockResolvedValue({
+      data: [{ slug: 'no-cat', title: 'Artikel Tanpa Kategori', category: null, created_at: '2026-01-01T00:00:00Z' }],
+    })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Artikel')).toBeInTheDocument()
+    })
+  })
+
+  test('artikel dengan published_at menampilkan tanggal publish', async () => {
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      // "15 Jan 2026" dalam format id-ID
+      expect(screen.getByText(/15 Jan 2026/i)).toBeInTheDocument()
+    })
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. ERROR HANDLING — API gagal
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Error handling — API gagal', () => {
+  test('komponen tetap render jika semua API reject', async () => {
+    getLatestArticles.mockRejectedValue(new Error('Network error'))
+    getGallery.mockRejectedValue(new Error('Network error'))
+    getPublicSettings.mockRejectedValue(new Error('Network error'))
+
+    await act(async () => { renderHome() })
+
+    // Komponen tidak crash; fallback state kosong ditampilkan
+    await waitFor(() => {
+      expect(screen.getByText('Belum ada artikel.')).toBeInTheDocument()
+    })
+  })
+
+  test('galeri placeholder muncul jika API galeri reject', async () => {
+    getGallery.mockRejectedValue(new Error('Timeout'))
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Kegiatan Pembelajaran')).toBeInTheDocument()
+    })
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 8. KONTEN STATIS — Selalu tampil
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Konten statis selalu tampil', () => {
+  test('stats bar menampilkan semua angka statistik', async () => {
+    await act(async () => { renderHome() })
+    expect(screen.getByText('500+')).toBeInTheDocument()
+    expect(screen.getByText('Santri Aktif')).toBeInTheDocument()
+    expect(screen.getByText('98%')).toBeInTheDocument()
+  })
+
+  test('tiga unit pendidikan ditampilkan', async () => {
+    await act(async () => { renderHome() })
+    expect(screen.getByText('SMP Nur Muhammad')).toBeInTheDocument()
+    expect(screen.getByText('MA Nur Muhammad')).toBeInTheDocument()
+    expect(screen.getByText('Tahfidz Murni')).toBeInTheDocument()
+  })
+
+  test('semua program PPDB berstatus "Buka"', async () => {
+    await act(async () => { renderHome() })
+    const bukaItems = screen.getAllByText(/— Buka/)
+    expect(bukaItems).toHaveLength(3)
+  })
+
+  test('semua enam keunggulan ditampilkan', async () => {
+    await act(async () => { renderHome() })
+    expect(screen.getByText('Lingkungan Islami')).toBeInTheDocument()
+    expect(screen.getByText('Pengajar Berkualitas')).toBeInTheDocument()
+    expect(screen.getByText('Asrama Nyaman')).toBeInTheDocument()
+    expect(screen.getByText('Kurikulum Terpadu')).toBeInTheDocument()
+    expect(screen.getByText('Pembinaan Karakter')).toBeInTheDocument()
+    expect(screen.getByText('Prestasi Akademik')).toBeInTheDocument()
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 9. GALERI — Edge case path null
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Galeri — edge case foto tanpa path', () => {
+  test('foto dengan path null tidak merender tag <img>', async () => {
+    getGallery.mockResolvedValue({
+      data: [{ id: 99, path: null, title: 'Foto Rusak' }],
+    })
+
+    await act(async () => { renderHome() })
+    await waitFor(() => {
+      expect(screen.getByText('Foto Rusak')).toBeInTheDocument()
+    })
+
+    // Tidak boleh ada img dengan src null / "null"
+    const images = screen.queryAllByRole('img')
+    const nullImgs = images.filter(img => !img.getAttribute('src') || img.getAttribute('src') === 'null')
+    expect(nullImgs).toHaveLength(0)
+  })
+})
