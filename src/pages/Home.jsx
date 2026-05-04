@@ -5,44 +5,6 @@ import { getLatestArticles } from '../api/articles'
 import { getGallery } from '../api/gallery'
 import { getPublicSettings } from '../api/settings'
 
-export default function Home() {
-const [currentSlide, setCurrentSlide] = useState(0)
-const [berita, setBerita] = useState([])
-const [galeri, setGaleri] = useState([])
-const [settings, setSettings] = useState({})  // ← harus sebelum slidess
-
-// ✅ FIX 1: Pindah ke luar komponen supaya stabil (tidak dibuat ulang tiap render)
-// ✅ FIX 2: title diubah jadi fungsi supaya JSX tidak inline di object literal
-const slides = [
-  {
-    tag: 'Pesantren Modern Berbasis Salaf',
-    title: <>'Membentuk Generasi<br /><em>Berakhlak & Berprestasi</em></>,
-    desc: 'Pesantren Nur Muhammad hadir dengan tiga program unggulan — membina santri yang berilmu, beriman, dan bermanfaat bagi umat.',
-    cta1: { label: 'Pelajari Lebih Lanjut', to: '/profil' },
-    cta2: { label: 'Daftar PPDB', to: '/ppdb' },
-    bg: settings.slide_1_bg || '',
-    img: settings.slide_1_img || '',
-  },
-  {
-    tag: "Program Tahfidz Al-Qur'an",
-    title: <>Hafal 30 Juz dengan<br /><em>Bimbingan Terbaik</em></>,
-    desc: "Program Tahfidz Murni kami dirancang intensif untuk santri pasca SMA/MA yang ingin mengabdikan diri menghafal Al-Qur'an.",
-    cta1: { label: 'Lihat Program Tahfidz', to: '/unit/tahfidz-murni' },
-    cta2: { label: 'Daftar Sekarang', to: '/ppdb' },
-    bg: settings.slide_2_bg || '',
-    img: settings.slide_2_img || '',
-  },
-  {
-    tag: 'PPDB 2026/2027 Dibuka',
-    title: <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
-    desc: 'Pendaftaran online mudah dan cepat. Pilih program SMP, MA, atau Tahfidz Murni — putra maupun putri.',
-    cta1: { label: 'Daftar Online', to: '/ppdb' },
-    cta2: { label: 'Cek Pendaftaran', to: '/ppdb/cek' },
-    bg: settings.slide_3_bg || '',
-    img: settings.slide_3_img || '',
-  },
-]
-
 const stats = [
   { num: '500+', label: 'Santri Aktif' },
   { num: '3', label: 'Program Unggulan' },
@@ -80,7 +42,39 @@ const keunggulan = [
   { icon: '🏆', title: 'Prestasi Akademik', desc: 'Santri berprestasi di berbagai kompetisi tingkat kabupaten hingga nasional.' },
 ]
 
-  // ✅ FIX 3: Gabungkan 3 fetch jadi satu useEffect dengan Promise.all
+const SLIDE_BASE = [
+  {
+    tag: 'Pesantren Modern Berbasis Salaf',
+    title: <>'Membentuk Generasi<br /><em>Berakhlak & Berprestasi</em></>,
+    desc: 'Pesantren Nur Muhammad hadir dengan tiga program unggulan — membina santri yang berilmu, beriman, dan bermanfaat bagi umat.',
+    cta1: { label: 'Pelajari Lebih Lanjut', to: '/profil' },
+    cta2: { label: 'Daftar PPDB', to: '/ppdb' },
+    bgKey: 'slide_1_bg', imgKey: 'slide_1_img',
+  },
+  {
+    tag: "Program Tahfidz Al-Qur'an",
+    title: <>Hafal 30 Juz dengan<br /><em>Bimbingan Terbaik</em></>,
+    desc: "Program Tahfidz Murni kami dirancang intensif untuk santri pasca SMA/MA yang ingin mengabdikan diri menghafal Al-Qur'an.",
+    cta1: { label: 'Lihat Program Tahfidz', to: '/unit/tahfidz-murni' },
+    cta2: { label: 'Daftar Sekarang', to: '/ppdb' },
+    bgKey: 'slide_2_bg', imgKey: 'slide_2_img',
+  },
+  {
+    tag: 'PPDB 2026/2027 Dibuka',
+    title: <>Daftarkan Putra-Putri<br /><em>Anda Sekarang</em></>,
+    desc: 'Pendaftaran online mudah dan cepat. Pilih program SMP, MA, atau Tahfidz Murni — putra maupun putri.',
+    cta1: { label: 'Daftar Online', to: '/ppdb' },
+    cta2: { label: 'Cek Pendaftaran', to: '/ppdb' },
+    bgKey: 'slide_3_bg', imgKey: 'slide_3_img',
+  },
+]
+
+export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [berita, setBerita] = useState([])
+  const [galeri, setGaleri] = useState([])
+  const [settings, setSettings] = useState({})
+
   useEffect(() => {
     Promise.all([
       getLatestArticles().catch(() => ({ data: [] })),
@@ -93,65 +87,75 @@ const keunggulan = [
     })
   }, [])
 
-  // ✅ FIX 4: Dependency array kosong karena SLIDES sudah stabil di luar komponen
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % SLIDES.length)
+      setCurrentSlide(prev => (prev + 1) % SLIDE_BASE.length)
     }, 5500)
     return () => clearInterval(timer)
   }, [])
 
+  // Slides digabung dengan settings di sini — reaktif terhadap perubahan settings
+  const slides = SLIDE_BASE.map(s => ({
+    ...s,
+    bg: settings[s.bgKey] || '',
+    img: settings[s.imgKey] || '',
+  }))
+
   return (
     <>
-      <section className="hero" style={slides[currentSlide].bg ? {
-  backgroundImage: `url(${slides[currentSlide].bg})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-} : {}}>
-  <div className="hero-bg-pattern" />
-  <div className="hero-arabic">ن</div>
-  <div className="hero-slider" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-    {slides.map((slide, i) => (
-      <div key={i} className={`slide ${i === currentSlide ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '2rem', width: '100%' }}>
-        <div style={{ flex: 1 }}>
-          <div className="slide-tag">{slide.tag}</div>
-          <h1>{slide.title}</h1>
-          <p>{slide.desc}</p>
-          <div className="slide-cta">
-            <Link to={slide.cta1.to} className="btn-hero-primary">{slide.cta1.label}</Link>
-            <Link to={slide.cta2.to} className="btn-hero-outline">{slide.cta2.label}</Link>
-          </div>
+      {/* ─── HERO ─── */}
+      <section
+        className="hero"
+        style={slides[currentSlide]?.bg ? {
+          backgroundImage: `url(${slides[currentSlide].bg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        } : {}}
+      >
+        <div className="hero-bg-pattern" />
+        <div className="hero-arabic">ن</div>
+        <div className="hero-slider">
+          {slides.map((slide, i) => (
+            <div key={i} className={`slide ${i === currentSlide ? 'active' : ''}`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', width: '100%' }}>
+                <div style={{ flex: 1 }}>
+                  <div className="slide-tag">{slide.tag}</div>
+                  <h1>{slide.title}</h1>
+                  <p>{slide.desc}</p>
+                  <div className="slide-cta">
+                    <Link to={slide.cta1.to} className="btn-hero-primary">{slide.cta1.label}</Link>
+                    <Link to={slide.cta2.to} className="btn-hero-outline">{slide.cta2.label}</Link>
+                  </div>
+                </div>
+                {slide.img && (
+                  <div style={{ flex: '0 0 320px' }}>
+                    <img
+                      src={slide.img}
+                      alt={slide.tag}
+                      style={{
+                        width: '100%', borderRadius: '16px',
+                        objectFit: 'cover', maxHeight: '380px',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-        {slide.img && (
-          <div style={{ flex: '0 0 320px' }}>
-            <img
-              src={slide.img}
-              alt={slide.tag}
-              style={{
-                width: '100%',
-                borderRadius: '16px',
-                objectFit: 'cover',
-                maxHeight: '380px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-              }}
+        <div className="hero-controls">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(i)}
             />
-          </div>
-        )}
-      </div>
-    ))}
-  </div>
-  <div className="hero-controls">
-    {slides.map((_, i) => (
-      <button
-        key={i}
-        className={`hero-dot ${i === currentSlide ? 'active' : ''}`}
-        onClick={() => setCurrentSlide(i)}
-      />
-    ))}
-    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p - 1 + slides.length) % slides.length)}>‹</button>
-    <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p + 1) % slides.length)}>›</button>
-  </div>
-</section>
+          ))}
+          <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p - 1 + slides.length) % slides.length)}>‹</button>
+          <button className="hero-nav-btn" onClick={() => setCurrentSlide(p => (p + 1) % slides.length)}>›</button>
+        </div>
+      </section>
 
       {/* ─── STATS ─── */}
       <div className="stats-bar">
@@ -168,8 +172,6 @@ const keunggulan = [
       {/* ─── KETUA YAYASAN ─── */}
       <section className="section kyayasan-section">
         <div className="kyayasan-inner">
-
-          {/* ✅ FIX 6: ky-profile-card sekarang ditutup dengan benar sebelum ky-amanat */}
           <div className="ky-profile-card" style={{
             backgroundImage: `url(${settings.hero_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg'})`,
             backgroundSize: 'cover',
@@ -188,15 +190,15 @@ const keunggulan = [
             <div style={{
               position: 'absolute', inset: 0,
               background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
-              borderRadius: '16px'
+              borderRadius: '16px',
             }} />
             <img
               src={settings.pengasuh_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg'}
-              alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
+              alt={settings.pengasuh_nama || 'Ketua Yayasan'}
               style={{
                 width: '160px', height: '200px', borderRadius: '12px',
                 objectFit: 'cover', border: '4px solid #c8a951',
-                position: 'relative', zIndex: 1, marginBottom: '1rem'
+                position: 'relative', zIndex: 1, marginBottom: '1rem',
               }}
             />
             <div style={{ position: 'relative', zIndex: 1 }}>
@@ -208,7 +210,6 @@ const keunggulan = [
               </div>
             </div>
           </div>
-          {/* ──────────────────────────────────────────────── */}
 
           <div className="ky-amanat">
             <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
@@ -237,7 +238,6 @@ const keunggulan = [
             </div>
             <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
           </div>
-
         </div>
       </section>
 
@@ -301,7 +301,6 @@ const keunggulan = [
             </div>
             <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
           </div>
-
           {galeri.length === 0 ? (
             <div className="galeri-grid">
               {['Kegiatan Pembelajaran', 'Upacara & Haflah', 'Kelas Tahfidz', 'Ekstrakurikuler', 'Asrama Santri'].map(label => (
@@ -316,7 +315,6 @@ const keunggulan = [
               {galeri.slice(0, 5).map(photo => (
                 <div key={photo.id} className="galeri-item">
                   <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
-                    {/* ✅ FIX 7: Null check untuk photo.path */}
                     {photo.path && (
                       <img
                         src={photo.path}
@@ -382,7 +380,7 @@ const keunggulan = [
             </p>
             <div className="cta-btns">
               <Link to="/ppdb" className="btn-cta-primary">Daftar Online Sekarang</Link>
-              <Link to="/ppdb/cek" className="btn-cta-outline">Cek Data Pendaftaran</Link>
+              <Link to="/ppdb" className="btn-cta-outline">Cek Data Pendaftaran</Link>
             </div>
           </div>
           <div className="cta-status">
