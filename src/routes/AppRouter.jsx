@@ -19,6 +19,7 @@ import AdminDashboard from '../pages/admin/AdminDashboard'
 import AdminPpdb from '../pages/admin/AdminPpdb'
 import AdminBerita from '../pages/admin/AdminBerita'
 import AdminPengaturan from '../pages/admin/AdminPengaturan'
+import AdminGaleri from '../pages/admin/AdminGaleri'
 import RequireAuth from '../components/admin/RequireAuth'
 
 export default function AppRouter() {
@@ -49,6 +50,7 @@ export default function AppRouter() {
             <Route path="/admin/ppdb" element={<AdminPpdb />} />
             <Route path="/admin/berita" element={<AdminBerita />} />
             <Route path="/admin/pengaturan" element={<AdminPengaturan />} />
+            <Route path="/admin/galeri" element={<AdminGaleri />} />
           </Route>
         </Route>
       </Routes>

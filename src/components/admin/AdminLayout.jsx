@@ -6,6 +6,7 @@ const navItems = [
   { to: '/admin', icon: '📊', label: 'Dashboard', end: true },
   { to: '/admin/ppdb', icon: '📋', label: 'Data PPDB' },
   { to: '/admin/berita', icon: '📰', label: 'Berita & Artikel' },
+  { to: '/admin/galeri', icon: '🖼️', label: 'Galeri Foto' },
   { to: '/admin/pengaturan', icon: '⚙️', label: 'Pengaturan' },
 ]
 
