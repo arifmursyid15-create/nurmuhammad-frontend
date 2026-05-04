@@ -72,6 +72,31 @@ export default function AdminPengaturan() {
           </div>
         </div>
 
+        {/* Foto & Media */}
+        <div className="admin-card" style={{ gridColumn: '1 / -1' }}>
+          <div className="admin-card-header"><h3>🖼️ Foto & Media</h3></div>
+          <div className="admin-card-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="admin-fg">
+              <label>URL Foto Background Hero</label>
+              <input type="text" value={settings.hero_image || ''} onChange={e => update('hero_image', e.target.value)} placeholder="https://res.cloudinary.com/..." />
+              {settings.hero_image && <img src={settings.hero_image} alt="hero preview" style={{ marginTop: '0.5rem', width: '100%', borderRadius: '8px', maxHeight: '120px', objectFit: 'cover' }} />}
+            </div>
+            <div className="admin-fg">
+              <label>URL Foto Pengasuh</label>
+              <input type="text" value={settings.pengasuh_image || ''} onChange={e => update('pengasuh_image', e.target.value)} placeholder="https://res.cloudinary.com/..." />
+              {settings.pengasuh_image && <img src={settings.pengasuh_image} alt="pengasuh preview" style={{ marginTop: '0.5rem', width: '140px', borderRadius: '8px', objectFit: 'cover' }} />}
+            </div>
+            <div className="admin-fg">
+              <label>Nama Pengasuh</label>
+              <input type="text" value={settings.pengasuh_nama || ''} onChange={e => update('pengasuh_nama', e.target.value)} />
+            </div>
+            <div className="admin-fg">
+              <label>Jabatan Pengasuh</label>
+              <input type="text" value={settings.pengasuh_jabatan || ''} onChange={e => update('pengasuh_jabatan', e.target.value)} />
+            </div>
+          </div>
+        </div>
+
         {/* Kontak */}
         <div className="admin-card">
           <div className="admin-card-header"><h3>📞 Kontak</h3></div>

@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react'
 import '../styles/home.css'
 import { getLatestArticles } from '../api/articles'
 import { getGallery } from '../api/gallery'
+import { getPublicSettings } from '../api/settings'
 
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [berita, setBerita] = useState([])
   const [galeri, setGaleri] = useState([])
+  const [settings, setSettings] = useState({})
 
         useEffect(() => {
           getLatestArticles()
@@ -19,6 +21,12 @@ export default function Home() {
         useEffect(() => {
           getGallery()
             .then(res => setGaleri(res.data || []))
+            .catch(() => {})
+        }, [])
+
+        useEffect(() => {
+          getPublicSettings()
+            .then(res => setSettings(res.data || {}))
             .catch(() => {})
         }, [])
 
@@ -141,7 +149,7 @@ export default function Home() {
       <section className="section kyayasan-section">
         <div className="kyayasan-inner">
           <div className="ky-profile-card" style={{
-  backgroundImage: 'url(https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg)',
+  backgroundImage: `url(${settings.hero_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/v1777692825/MuchaTseBle_tzgai6.jpg'})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   borderRadius: '16px',
@@ -161,7 +169,7 @@ export default function Home() {
     borderRadius: '16px'
   }} />
   <img
-    src="https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg"
+    src={settings.pengasuh_image || 'https://res.cloudinary.com/dmh5q3yef/image/upload/WhatsApp_Image_2026-05-01_at_23.40.33_clp74h.jpg'}
     alt="Kyai Agus Kamaludin Ismail Al-Hafidz"
     style={{
       width: '160px', height: '200px', borderRadius: '12px',
@@ -170,10 +178,9 @@ export default function Home() {
     }}
   />
   <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>Kyai Agus Kamaludin Ismail Al-Hafidz</div>
-    <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>Ketua Yayasan & Pengasuh Pesantren</div>
+    <div style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>{settings.pengasuh_nama || 'Kyai Agus Kamaludin Ismail Al-Hafidz'}</div>
+    <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem', marginTop: '3px' }}>{settings.pengasuh_jabatan || 'Ketua Yayasan & Pengasuh Pesantren'}</div>
   </div>
-</div>
 
           <div className="ky-amanat">
             <div className="ky-eyebrow">Amanat Ketua Yayasan</div>
@@ -196,8 +203,8 @@ export default function Home() {
             <div className="ky-attribution">
               <div className="ky-attr-line" />
               <div>
-                <div className="ky-attr-name">Kyai Agus Kamaludin Ismail Al-Hafidz</div>
-                <div className="ky-attr-role">Ketua Yayasan & Pengasuh Nur Muhammad</div>
+                <div className="ky-attr-name">{settings.pengasuh_nama || 'Kyai Agus Kamaludin Ismail Al-Hafidz'}</div>
+                <div className="ky-attr-role">{settings.pengasuh_jabatan || 'Ketua Yayasan & Pengasuh Pesantren'}</div>
               </div>
             </div>
             <Link to="/profil" className="ky-link">Lihat Profil Pesantren →</Link>
