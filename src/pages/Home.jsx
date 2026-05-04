@@ -5,6 +5,12 @@ import { getLatestArticles } from '../api/articles'
 import { getGallery } from '../api/gallery'
 import { getPublicSettings } from '../api/settings'
 
+export default function Home() {
+const [currentSlide, setCurrentSlide] = useState(0)
+const [berita, setBerita] = useState([])
+const [galeri, setGaleri] = useState([])
+const [settings, setSettings] = useState({})  // ← harus sebelum slidess
+
 // ✅ FIX 1: Pindah ke luar komponen supaya stabil (tidak dibuat ulang tiap render)
 // ✅ FIX 2: title diubah jadi fungsi supaya JSX tidak inline di object literal
 const slides = [
@@ -73,12 +79,6 @@ const keunggulan = [
   { icon: '🤝', title: 'Pembinaan Karakter', desc: 'Program pembiasaan akhlak mulia, disiplin, dan kemandirian yang diterapkan sehari-hari.' },
   { icon: '🏆', title: 'Prestasi Akademik', desc: 'Santri berprestasi di berbagai kompetisi tingkat kabupaten hingga nasional.' },
 ]
-
-export default function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [berita, setBerita] = useState([])
-  const [galeri, setGaleri] = useState([])
-  const [settings, setSettings] = useState({})
 
   // ✅ FIX 3: Gabungkan 3 fetch jadi satu useEffect dengan Promise.all
   useEffect(() => {
