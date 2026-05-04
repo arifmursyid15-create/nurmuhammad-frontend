@@ -1,6 +1,16 @@
 ﻿import { Link } from 'react-router-dom'
+import useSettings from '../../hooks/useSettings'
 
 export default function Footer() {
+  const settings = useSettings()
+  const waNumber = settings.site_wa || '6282177832648'
+  const instagram = settings.social_instagram || 'https://www.instagram.com/pptq_nurmuhammad_official'
+  const facebook = settings.social_facebook || '#'
+  const youtube = settings.social_youtube || 'https://youtube.com/@pptqnurmuhammadofficial3453'
+  const address = settings.site_address || 'C978+P3H, Wonoayu, Dukuh Mojo, Kec. Mojoagung, Jombang 61482'
+  const phone = settings.site_phone || '+62 821-7783-2648'
+  const email = settings.site_email || 'info@ppanurmuhammad.web.id'
+
   return (
     <footer className="footer">
       <div className="footer-top">
@@ -17,13 +27,13 @@ export default function Footer() {
             Pesantren modern berbasis salaf, membina generasi muslim yang berilmu, berakhlak, dan berdaya saing.
           </p>
           <div className="footer-socials">
-            <a href="https://www.instagram.com/pptq_nurmuhammad_official" target="_blank" rel="noreferrer" className="social-btn">
+            <a href={instagram} target="_blank" rel="noreferrer" className="social-btn">
               <i className="fa-brands fa-instagram" />
             </a>
-            <a href="#" className="social-btn">
+            <a href={facebook} target="_blank" rel="noreferrer" className="social-btn">
               <i className="fa-brands fa-facebook" />
             </a>
-            <a href="https://youtube.com/@pptqnurmuhammadofficial3453" target="_blank" rel="noreferrer" className="social-btn">
+            <a href={youtube} target="_blank" rel="noreferrer" className="social-btn">
               <i className="fa-brands fa-youtube" />
             </a>
             <a href="https://www.tiktok.com/@pptq_nurmuhammad_" target="_blank" rel="noreferrer" className="social-btn">
@@ -53,9 +63,9 @@ export default function Footer() {
         </div>
         <div className="footer-col">
           <h4>Kontak</h4>
-          <p>📍 C978+P3H, Wonoayu, Dukuh Mojo,<br />Kec. Mojoagung, Jombang 61482</p>
-          <p>💬 +62 821-7783-2648</p>
-          <p>✉️ info@ppanurmuhammad.web.id</p>
+          <p>📍 {address}</p>
+          <p>💬 <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{phone}</a></p>
+          <p>✉️ {email}</p>
           <p>🌐 ppanurmuhammad.web.id</p>
         </div>
       </div>
