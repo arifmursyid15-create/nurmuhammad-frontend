@@ -10,6 +10,7 @@ import BeritaList from '../pages/berita/BeritaList'
 import BeritaDetail from '../pages/berita/BeritaDetail'
 import PpdbPage from '../pages/ppdb/PpdbPage'
 import Kontak from '../pages/Kontak'
+import Galeri from '../pages/Galeri'
 
 // Admin
 import AdminLogin from '../pages/admin/AdminLogin'
@@ -35,6 +36,7 @@ export default function AppRouter() {
           <Route path="/berita/:slug" element={<BeritaDetail />} />
           <Route path="/ppdb" element={<PpdbPage />} />
           <Route path="/kontak" element={<Kontak />} />
+          <Route path="/galeri" element={<Galeri />} />
         </Route>
 
         {/* Admin Login */}
