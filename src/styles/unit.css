@@ -239,10 +239,9 @@
   border-radius: 24px; overflow: hidden; position: relative;
 }
 
-/* FIX: align-items stretch agar kedua kolom sama tinggi */
 .unit-ppdb-inner {
   display: grid; grid-template-columns: 1fr 260px; gap: 3rem;
-  padding: 3rem; position: relative; z-index: 1; align-items: stretch;
+  padding: 3rem; position: relative; z-index: 1; align-items: start;
 }
 
 .ppdb-eyebrow { font-size: 0.72rem; color: var(--green-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
@@ -276,15 +275,14 @@
 }
 .btn-ppdb-wa:hover { background: #1ebe5b; }
 
-/* FIX: pakai height: 100% agar card kanan mengisi penuh tinggi kolom kiri */
 .ppdb-info-card {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 16px;
   padding: 1.5rem;
-  height: 100%;
-  box-sizing: border-box;
-  align-self: stretch;
+  align-self: start;
+  position: sticky;
+  top: 100px;
 }
 .ppdb-info-card h4 { font-size: 0.75rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; font-weight: 700; }
 .ppdb-info-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.82rem; }
@@ -308,8 +306,7 @@
   .unit-ppdb-inner { grid-template-columns: 1fr; padding: 2rem; }
   .unit-galeri-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .galeri-item:first-child { grid-row: span 1; }
-  /* Pada mobile, card info kembali ke tinggi natural */
-  .ppdb-info-card { height: auto; }
+  .ppdb-info-card { position: static; }
 }
 @media (max-width: 640px) {
   .kurikulum-grid { grid-template-columns: 1fr; }
