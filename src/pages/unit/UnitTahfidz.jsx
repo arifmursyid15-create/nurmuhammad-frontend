@@ -1,7 +1,24 @@
 import { Link } from 'react-router-dom'
 import '../../styles/unit.css'
+import { useState, useEffect } from 'react'
+import { getGallery } from '../../api/gallery'
+import useSettings from '../../hooks/useSettings'
 
 export default function UnitTahfidz() {
+  const settings = useSettings()
+  const [galeri, setGaleri] = useState([])
+
+  useEffect(() => {
+    getGallery({ category: 'Tahfidz' })
+      .then(res => setGaleri(res.data || []))
+      .catch(() => {})
+  }, [])
+
+  const waNumber = settings.site_wa || '6282177832648'
+  const tahunAjaran = settings.ppdb_tahun_ajaran || '2026/2027'
+  const kuotaTahfidz = settings.ppdb_kuota_tahfidz_murni || '30'
+  const statusTahfidz = settings.ppdb_status_tahfidz_murni || 'open'
+  
   const infoRows = [
     { icon: '📖', label: 'Nama Program', value: 'Tahfidz Murni' },
     { icon: '📍', label: 'Lokasi', value: 'Wonoayu, Mojoagung, Jombang' },
@@ -65,13 +82,7 @@ export default function UnitTahfidz() {
     { time: '21.30', desc: <><strong>Istirahat Malam</strong> — Pengawasan musyrif asrama</> },
   ]
 
-  const galeri = [
-    { icon: '📖', label: 'Setoran Hafalan' },
-    { icon: '🤲', label: 'Tilawah Berjamaah' },
-    { icon: '🎉', label: 'Khataman 30 Juz' },
-    { icon: '🌙', label: 'Qiyamul Lail' },
-    { icon: '📜', label: 'Ijazah Sanad' },
-  ]
+  
 
   const alumni = [
     { icon: '👳', name: 'Ahmad Fauzan, S.Q.', detail: 'Alumni 2023 · Kini mengajar di pesantren Jombang', quote: 'Dua tahun di sini adalah perjalanan terbaik hidup saya. Bimbingan musyrif yang sabar dan lingkungan pesantren yang kondusif membuat hafalan terasa lebih mudah dan berkah. Alhamdulillah, khatam 30 juz sebelum usia 21 tahun.' },
@@ -97,7 +108,9 @@ export default function UnitTahfidz() {
         <div className="unit-hero-arabic">ن</div>
         <div className="unit-hero-inner">
           <div>
-            <div className="unit-hero-ppdb-badge"><span className="dot" /> PPDB 2026/2027 Dibuka</div>
+            <div className="unit-hero-ppdb-badge">
+              <span className="dot" /> PPDB {tahunAjaran} {statusTahfidz === 'open' ? 'Dibuka' : 'Ditutup'}
+            </div>
             <h1>
               <span className="unit-level">Program Intensif · Pasca SMA / MA</span>
               Tahfidz<br />Murni
@@ -214,14 +227,30 @@ export default function UnitTahfidz() {
 
         {/* GALERI */}
         <div className="unit-galeri-section">
-          <div className="galeri-header">
-            <div><div className="sec-eyebrow">Galeri</div><h2 className="sec-title" style={{ marginBottom: 0 }}>Suasana Program Tahfidz</h2></div>
-            <a href="#" className="link-all">Lihat semua foto →</a>
+            <div className="galeri-header">
+              <div><div className="sec-eyebrow">Galeri</div><h2 className="sec-title" style={{ marginBottom: 0 }}>Suasana Program Tahfidz</h2></div>
+              <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
+            </div>
+            <div className="unit-galeri-grid">
+              {galeri.length === 0 ? (
+                [{ icon: '📖', label: 'Setoran Hafalan' }, { icon: '🤲', label: 'Tilawah Berjamaah' }, { icon: '🎉', label: 'Khataman 30 Juz' }, { icon: '🌙', label: 'Qiyamul Lail' }, { icon: '📜', label: 'Ijazah Sanad' }].map(g => (
+                  <div key={g.label} className="galeri-item">
+                    <div className="galeri-thumb">{g.icon}</div>
+                    <div className="galeri-label">{g.label}</div>
+                  </div>
+                ))
+              ) : (
+                galeri.slice(0, 5).map(photo => (
+                  <div key={photo.id} className="galeri-item">
+                    <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
+                      <img src={photo.path} alt={photo.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div className="galeri-label">{photo.title}</div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-          <div className="unit-galeri-grid">
-            {galeri.map(g => <div key={g.label} className="galeri-item"><div className="galeri-thumb">{g.icon}</div><div className="galeri-label">{g.label}</div></div>)}
-          </div>
-        </div>
 
         {/* TESTIMONI */}
         <div id="testimoni" style={{ scrollMarginTop: '80px', marginBottom: '4rem' }}>
@@ -259,16 +288,16 @@ export default function UnitTahfidz() {
                 </div>
                 <div className="ppdb-btns">
                   <Link to="/ppdb" className="btn-ppdb-gold">✏️ Daftar PPDB Online</Link>
-                  <a href="https://wa.me/6282177832648" className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
+                  <a href={`https://wa.me/${waNumber}`} className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
                 </div>
               </div>
               <div className="ppdb-info-card">
-                <h4>Info PPDB Tahfidz 2026/2027</h4>
-                <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className="status-open-badge">Dibuka</span></span></div>
+                <h4>Info PPDB Tahfidz {tahunAjaran}</h4>
+                <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className={statusTahfidz === 'open' ? 'status-open-badge' : 'status-closed-badge'}>{statusTahfidz === 'open' ? 'Dibuka' : 'Ditutup'}</span></span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Penerimaan</span><span className="pir-value">Putra & Putri</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">30 Santri</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">{kuotaTahfidz} Santri</span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Biaya Daftar</span><span className="pir-value">Rp 100.000</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">2026/2027</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">{tahunAjaran}</span></div>
                 <div className="ppdb-note">Kuota terbatas. Pendaftaran ditutup setelah kuota terpenuhi.</div>
               </div>
             </div>

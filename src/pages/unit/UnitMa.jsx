@@ -1,7 +1,23 @@
 import { Link } from 'react-router-dom'
 import '../../styles/unit.css'
+import { useState, useEffect } from 'react'
+import { getGallery } from '../../api/gallery'
+import useSettings from '../../hooks/useSettings'
 
 export default function UnitMa() {
+const settings = useSettings()
+const [galeri, setGaleri] = useState([])
+
+useEffect(() => {
+  getGallery({ category: 'MA' })
+    .then(res => setGaleri(res.data || []))
+    .catch(() => {})
+}, [])
+
+  const waNumber = settings.site_wa || '6282177832648'
+  const tahunAjaran = settings.ppdb_tahun_ajaran || '2026/2027'
+  const kuotaMa = settings.ppdb_kuota_ma || '50'
+  const statusMa = settings.ppdb_status_ma || 'open'
   const infoRows = [
     { icon: '📚', label: 'Nama Unit', value: 'MA Nur Muhammad' },
     { icon: '📍', label: 'Lokasi', value: 'Wonoayu, Mojoagung, Jombang' },
@@ -59,13 +75,6 @@ export default function UnitMa() {
     { time: '21.30', desc: <><strong>Istirahat Malam</strong> — Pengawasan musyrif asrama</> },
   ]
 
-  const galeri = [
-    { icon: '📚', label: 'KBM di Kelas' },
-    { icon: '📖', label: 'Kajian Kitab' },
-    { icon: '🎓', label: 'Haflah & Wisuda' },
-    { icon: '🏅', label: 'Lomba & Prestasi' },
-    { icon: '🏠', label: 'Asrama Santri' },
-  ]
 
   const prestasi = [
     { icon: '🥇', title: 'Juara 1 MQK Tingkat Provinsi', desc: 'Musabaqah Qira\'atil Kutub cabang Fiqih kategori MA se-Jawa Timur.', year: 'Surabaya, 2024' },
@@ -94,7 +103,9 @@ export default function UnitMa() {
         <div className="unit-hero-arabic">ن</div>
         <div className="unit-hero-inner">
           <div>
-            <div className="unit-hero-ppdb-badge"><span className="dot" /> PPDB 2026/2027 Dibuka</div>
+            <div className="unit-hero-ppdb-badge">
+              <span className="dot" /> PPDB {tahunAjaran} {statusMa === 'open' ? 'Dibuka' : 'Ditutup'}
+            </div>
             <h1>
               <span className="unit-level">Madrasah Aliyah · Setara SMA</span>
               MA<br />Nur Muhammad
@@ -205,10 +216,26 @@ export default function UnitMa() {
         <div className="unit-galeri-section">
           <div className="galeri-header">
             <div><div className="sec-eyebrow">Galeri</div><h2 className="sec-title" style={{ marginBottom: 0 }}>Aktivitas Santri MA</h2></div>
-            <a href="#" className="link-all">Lihat semua foto →</a>
+            <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
           </div>
           <div className="unit-galeri-grid">
-            {galeri.map(g => <div key={g.label} className="galeri-item"><div className="galeri-thumb">{g.icon}</div><div className="galeri-label">{g.label}</div></div>)}
+            {galeri.length === 0 ? (
+              [{ icon: '📚', label: 'KBM di Kelas' }, { icon: '📖', label: 'Kajian Kitab' }, { icon: '🎓', label: 'Haflah & Wisuda' }, { icon: '🏅', label: 'Lomba & Prestasi' }, { icon: '🏠', label: 'Asrama Santri' }].map(g => (
+                <div key={g.label} className="galeri-item">
+                  <div className="galeri-thumb">{g.icon}</div>
+                  <div className="galeri-label">{g.label}</div>
+                </div>
+              ))
+            ) : (
+              galeri.slice(0, 5).map(photo => (
+                <div key={photo.id} className="galeri-item">
+                  <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
+                    <img src={photo.path} alt={photo.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div className="galeri-label">{photo.title}</div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -234,16 +261,15 @@ export default function UnitMa() {
                 </div>
                 <div className="ppdb-btns">
                   <Link to="/ppdb" className="btn-ppdb-gold">✏️ Daftar PPDB Online</Link>
-                  <a href="https://wa.me/6282177832648" className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
-                </div>
+                  <a href={`https://wa.me/${waNumber}`} className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
               </div>
               <div className="ppdb-info-card">
-                <h4>Info PPDB MA 2026/2027</h4>
-                <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className="status-open-badge">Dibuka</span></span></div>
+                <h4>Info PPDB MA {tahunAjaran}</h4>
+                <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className={statusMa === 'open' ? 'status-open-badge' : 'status-closed-badge'}>{statusMa === 'open' ? 'Dibuka' : 'Ditutup'}</span></span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Penerimaan</span><span className="pir-value">Putra & Putri</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">50 Santri</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">{kuotaMa} Santri</span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Biaya Daftar</span><span className="pir-value">Rp 150.000</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">2026/2027</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">{tahunAjaran}</span></div>
                 <div className="ppdb-note">Pendaftaran ditutup setelah kuota terpenuhi.</div>
               </div>
             </div>
