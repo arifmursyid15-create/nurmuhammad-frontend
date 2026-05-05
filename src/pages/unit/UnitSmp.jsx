@@ -1,8 +1,24 @@
 import { Link } from 'react-router-dom'
 import '../../styles/unit.css'
+import { useState, useEffect } from 'react'
+import { getGallery } from '../../api/gallery'
+import useSettings from '../../hooks/useSettings'
 
 export default function UnitSmp() {
-  const infoRows = [
+  const settings = useSettings()
+  const [galeri, setGaleri] = useState([])
+
+      useEffect(() => {
+        getGallery({ category: 'SMP' })
+          .then(res => setGaleri(res.data || []))
+          .catch(() => {})
+      }, [])
+
+const waNumber = settings.site_wa || '6282177832648'
+const tahunAjaran = settings.ppdb_tahun_ajaran || '2025/2026'
+const kuotaSmp = settings.ppdb_kuota_smp || '60'
+const statusSmp = settings.ppdb_status_smp || 'open'
+const infoRows = [
     { icon: '🏫', label: 'Nama Unit', value: 'SMP Nur Muhammad' },
     { icon: '📍', label: 'Lokasi', value: 'Wonoayu, Mojoagung, Jombang' },
     { icon: '👥', label: 'Penerimaan', value: 'Putra & Putri' },
@@ -97,7 +113,9 @@ export default function UnitSmp() {
         <div className="unit-hero-arabic">ن</div>
         <div className="unit-hero-inner">
           <div>
-            <div className="unit-hero-ppdb-badge"><span className="dot" /> PPDB 2025/2026 Dibuka</div>
+            <div className="unit-hero-ppdb-badge">
+              <span className="dot" /> PPDB {tahunAjaran} {statusSmp === 'open' ? 'Dibuka' : 'Ditutup'}
+            </div>
             <h1>
               <span className="unit-level">Sekolah Menengah Pertama · Berbasis Pesantren</span>
               SMP<br />Nur Muhammad
@@ -238,22 +256,33 @@ export default function UnitSmp() {
           </div>
         </div>
 
-        {/* GALERI */}
+       {/* GALERI */}
         <div className="unit-galeri-section">
           <div className="galeri-header">
             <div>
               <div className="sec-eyebrow">Galeri</div>
               <h2 className="sec-title" style={{ marginBottom: 0 }}>Aktivitas Santri SMP</h2>
             </div>
-            <a href="#" className="link-all">Lihat semua foto →</a>
+            <Link to="/galeri" className="link-all">Lihat semua foto →</Link>
           </div>
           <div className="unit-galeri-grid">
-            {galeri.map(g => (
-              <div key={g.label} className="galeri-item">
-                <div className="galeri-thumb">{g.icon}</div>
-                <div className="galeri-label">{g.label}</div>
-              </div>
-            ))}
+            {galeri.length === 0 ? (
+              [{ icon: '📸', label: 'KBM di Kelas' }, { icon: '📖', label: 'Setoran Tahfidz' }, { icon: '📚', label: 'Kajian Kitab' }, { icon: '⚽', label: 'Olahraga' }, { icon: '🎓', label: 'Upacara' }].map(g => (
+                <div key={g.label} className="galeri-item">
+                  <div className="galeri-thumb">{g.icon}</div>
+                  <div className="galeri-label">{g.label}</div>
+                </div>
+              ))
+            ) : (
+              galeri.slice(0, 5).map(photo => (
+                <div key={photo.id} className="galeri-item">
+                  <div className="galeri-thumb" style={{ padding: 0, overflow: 'hidden' }}>
+                    <img src={photo.path} alt={photo.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div className="galeri-label">{photo.title}</div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -298,16 +327,23 @@ export default function UnitSmp() {
                 </div>
                 <div className="ppdb-btns">
                   <Link to="/ppdb" className="btn-ppdb-gold">✏️ Daftar PPDB Online</Link>
-                  <a href="https://wa.me/6281200000000" className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
+                  <a href={`https://wa.me/${waNumber}`} className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
                 </div>
               </div>
               <div className="ppdb-info-card">
-                <h4>Info PPDB SMP 2025/2026</h4>
-                <div className="ppdb-info-row"><span className="pir-label">Status</span><span className="pir-value"><span className="status-open-badge">Dibuka</span></span></div>
+                <h4>Info PPDB SMP {tahunAjaran}</h4>
+                <div className="ppdb-info-row">
+                  <span className="pir-label">Status</span>
+                  <span className="pir-value">
+                    <span className={statusSmp === 'open' ? 'status-open-badge' : 'status-closed-badge'}>
+                      {statusSmp === 'open' ? 'Dibuka' : 'Ditutup'}
+                    </span>
+                  </span>
+                </div>
                 <div className="ppdb-info-row"><span className="pir-label">Penerimaan</span><span className="pir-value">Putra & Putri</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">60 Santri</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Kuota</span><span className="pir-value">{kuotaSmp} Santri</span></div>
                 <div className="ppdb-info-row"><span className="pir-label">Biaya Daftar</span><span className="pir-value">Rp 150.000</span></div>
-                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">2025/2026</span></div>
+                <div className="ppdb-info-row"><span className="pir-label">Tahun Ajaran</span><span className="pir-value">{tahunAjaran}</span></div>
                 <div className="ppdb-note">Pendaftaran ditutup setelah kuota terpenuhi. Segera daftarkan putra-putri Anda.</div>
               </div>
             </div>
