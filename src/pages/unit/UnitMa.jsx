@@ -252,7 +252,7 @@ useEffect(() => {
           <div className="unit-ppdb-section">
             <div className="unit-ppdb-inner">
               <div>
-                <div className="ppdb-eyebrow">Pendaftaran · PPDB 2026/2027</div>
+                <div className="ppdb-eyebrow">Pendaftaran · PPDB {tahunAjaran}</div>
                 <h2 className="ppdb-title">Daftar ke MA Nur Muhammad</h2>
                 <p className="ppdb-desc">Bergabunglah bersama ratusan santri di MA Nur Muhammad. Pendaftaran online mudah dan bisa dilakukan kapan saja.</p>
                 <div className="syarat-grid">
@@ -262,6 +262,7 @@ useEffect(() => {
                 <div className="ppdb-btns">
                   <Link to="/ppdb" className="btn-ppdb-gold">✏️ Daftar PPDB Online</Link>
                   <a href={`https://wa.me/${waNumber}`} className="btn-ppdb-wa" target="_blank" rel="noreferrer">💬 Tanya via WhatsApp</a>
+                </div>
               </div>
               <div className="ppdb-info-card">
                 <h4>Info PPDB MA {tahunAjaran}</h4>
