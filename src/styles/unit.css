@@ -242,6 +242,7 @@
   display: grid; grid-template-columns: 1fr 260px; gap: 3rem;
   padding: 3rem; position: relative; z-index: 1; align-items: start;
 }
+
 .ppdb-eyebrow { font-size: 0.72rem; color: var(--green-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
 .ppdb-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.75rem; }
 .ppdb-desc { color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.7; margin-bottom: 2rem; }

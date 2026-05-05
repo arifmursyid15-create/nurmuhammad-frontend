@@ -301,7 +301,7 @@ const infoRows = [
           <div className="unit-ppdb-section">
             <div className="unit-ppdb-inner">
               <div>
-                <div className="ppdb-eyebrow">Pendaftaran · PPDB 2025/2026</div>
+                <div className="ppdb-eyebrow">Pendaftaran · PPDB {tahunAjaran}</div>
                 <h2 className="ppdb-title">Daftar ke SMP Nur Muhammad</h2>
                 <p className="ppdb-desc">Bergabunglah bersama ratusan santri di SMP Nur Muhammad. Pendaftaran online mudah dan bisa dilakukan kapan saja.</p>
                 <div className="syarat-grid">

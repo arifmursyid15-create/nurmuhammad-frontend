@@ -279,7 +279,7 @@ export default function UnitTahfidz() {
           <div className="unit-ppdb-section">
             <div className="unit-ppdb-inner">
               <div>
-                <div className="ppdb-eyebrow">Pendaftaran · PPDB 2026/2027</div>
+                <div className="ppdb-eyebrow">Pendaftaran · PPDB {tahunAjaran}</div>
                 <h2 className="ppdb-title">Daftar Program Tahfidz Murni</h2>
                 <p className="ppdb-desc">Dedikasikan waktu terbaik Anda untuk Al-Qur'an. Kami siap membimbing perjalanan hafalan Anda dari juz pertama hingga khatam 30 juz.</p>
                 <div className="syarat-grid">
