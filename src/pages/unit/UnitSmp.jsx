@@ -75,13 +75,6 @@ const infoRows = [
     { time: '21.30', desc: <><strong>Istirahat Malam</strong> — Pengawasan musyrif asrama</> },
   ]
 
-  const galeri = [
-    { icon: '📸', label: 'KBM di Kelas' },
-    { icon: '📖', label: 'Setoran Tahfidz' },
-    { icon: '📚', label: 'Kajian Kitab' },
-    { icon: '⚽', label: 'Olahraga' },
-    { icon: '🎓', label: 'Upacara' },
-  ]
 
   const prestasi = [
     { icon: '🥇', title: 'Juara 1 MTQ Tahfidz Kabupaten', desc: 'Cabang Tahfidz 5 Juz putra dan putri tingkat Kabupaten Jombang.', year: 'Jombang, 2024' },
